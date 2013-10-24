@@ -39,20 +39,79 @@ Removing CFSQP
     2. git filter-branch after cloning.
     3. git subtree (see GitHub help page about this).
 
+
 Normalize line endings
 ----------------------
 This is easy to do; Sherm has done it, but I'm not sure at what point it should
 occur, relative too everything else. The reason why this is important is that
 some files have windows line endings (LFCR or something), while some have unix
-line endings (CR).
+line endings (CR). See
+http://blog.gyoshev.net/2013/08/normalizing-line-endings-in-git-repositories/.
+Chris advises that we use filter-branch.
+
 
 Split the repository into multiple
 ----------------------------------
+It may be that we don't want to split the repositories for a few weeks after
+we've moved to git, so that we only have to adapt to 1 thing at a time. An
+alternative is that we split into multiple projects while we're still using
+SVN. However, I think that makes it harder to maintain the history in git.
+
 git filter-branch --subdirectory would be useful, if we already had separate
 folders. But instead this might mean cloning the full repository for each of
 the 5 separate repos, and then moving files, and deleting the rest of the
 files. Is there one repository (GUI) that we want to not delete the history
 for?
+
+This is how we might rearrange the repositories:
+opensim-core:
+Applications -> opensim-core/applications
+ApiDoxygen.cmake -> opensim-core/APIDoxygen.cmake
+CMakeLists.txt -> opensim-core/
+Copyright.txt -> opensim-core/
+CTestConfig.cmake -> opensim-core/
+Doxyfile.in -> opensim-core/doc/
+FindSimbody.cmake -> opensim-core/cmake
+NOTICE -> opensim-core/LICENSE.txt
+OpenSimAPI.html -> opensim-core/doc
+ReadMe.txt -> opensim-core/README.txt
+OpenSim/Actuators -> opensim-core/OpenSim/
+OpenSim/Analyses -> opensim-core/OpenSim/
+OpenSim/Common -> opensim-core/OpenSim/
+OpenSim/Simulation -> opensim-core/OpenSim/
+OpenSim/Tools -> opensim-core/OpenSim/
+OpenSim/Utilities -> opensim-core/utilities
+OpenSim/Tests -> opensim-core/tests
+OpenSim/Examples -> opensim-core/examples
+OpenSim/Auxiliary -> opensim-core/tests
+OpenSim/OpenSimDoxygenMain.h -> opensim-core/doc/ [isn't actually code]
+OpenSim/doc -> opensim-core/doc
+OpenSim/Vendors/lepton -> opensim-core/external/lepton
+
+opensim-gui:
+Gui/Documentation -> opensim-gui/documentation
+Gui/Internal -> opensim-gui/internal
+Gui/opensim -> opensim-gui/opensim
+Gui/plugins -> opensim-gui/plugins
+Gui/CMakeLists.txt -> opensim-gui/CMakeLists.txt
+Installer/* -> opensim-gui/installer
+Vendors/vtk_dll -> opensim-gui/external/vtk
+NSIS.* -> opensim-gui/installer
+WriteEnvStr.nsh -> opensim-gui/installer
+
+opensim-wrapping:
+Wrapping -> opensim-wrapping
+
+opensim-models:
+Models -> opensim-models
+
+opensim-cfsqp (can we just name this 'cfsqp'?):
+Models -> opensim-cfsqp
+
+
+Many changes would need to be made immediately to the CMakeLists files in order
+for the repositories to work. Should these changes be made before the
+repositories are put up online? Maybe it doesn't matter.
 
 Branches to tags
 ----------------
