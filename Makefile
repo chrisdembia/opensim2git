@@ -35,4 +35,6 @@ removegui:
 
 kdesvn2git:
 	# Should be able to get svn-all-fast-export from apt-get.
-	svn-all-fast-export --rules opensim2git.rules --debug-rules --add-metadata --identity-map authors.txt --stats --max-rev 7566 svn/ &>> kdesvn2git_log.txt
+	# TODO remove --max-rev flag; it's there temporarily so that this doesn't
+	# end with a FATAL signal. Might still end with a FATAL anyway...
+	svn-all-fast-export --rules opensim2git.rules --debug-rules --add-metadata --identity-map authors.txt --stats --max-rev 7500 svn/ > kdesvn2git_log.txt 2>&1

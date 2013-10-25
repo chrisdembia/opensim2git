@@ -8,6 +8,15 @@ end repository
 create repository opensim-core
 end repository
 
+create repository opensim-wrapping
+end repository
+
+create repository opensim-cfsqp
+end repository
+
+create repository opensim-models
+end repository
+
 #
 # Declare the rules
 # Note: rules must end in a slash
@@ -27,6 +36,7 @@ end match
 
 match /Trunk/Applications/
   repository opensim-core
+  prefix applications/
   branch master
 end match
 
@@ -37,27 +47,31 @@ end match
 
 match /Trunk/OpenSim/Utilities/
   repository opensim-core
+  prefix utilities/
   branch master
 end match
 
 match /Trunk/OpenSim/Tests/
   repository opensim-core
+  prefix tests/
   branch master
 end match
 
 match /Trunk/OpenSim/Examples/
   repository opensim-core
+  prefix examples/
   branch master
 end match
 
 match /Trunk/OpenSim/Auxiliary/
   repository opensim-core
-  prefix Tests/
+  prefix tests/
   branch master
 end match
 
 match /Trunk/OpenSim/doc/
   repository opensim-core
+  prefix doc/
   branch master
 end match
 
@@ -69,6 +83,11 @@ end match
 match /Trunk/OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.*
 end match
 
+match /Trunk/OpenSim/Wrapping/
+  repository opensim-wrapping
+  branch master
+end match
+
 match /Trunk/OpenSim/
   repository opensim-core
   prefix OpenSim/
@@ -78,6 +97,16 @@ end match
 match /Trunk/OpenSim/Vendors/lepton/
   repository opensim-core
   prefix external/
+end match
+
+match /Trunk/Models/
+  repository opensim-models
+  branch master
+end match
+
+match /Trunk/Vendors/CFSQP/
+  repository opensim-cfsqp
+  branch master
 end match
 
 #match /Trunk/
