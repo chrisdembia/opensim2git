@@ -32,3 +32,7 @@ removegui:
 	git log --pretty=format:'' | wc -l
 	git filter-branch -f --tree-filter 'rm -rf Gui' -- --all
 	git log --pretty-format:'' | wc -l
+
+kdesvn2git:
+	# Should be able to get svn-all-fast-export from apt-get.
+	svn-all-fast-export --rules opensim2git.rules --debug-rules --add-metadata --identity-map authors.txt --stats --max-rev 7566 svn/ &>> kdesvn2git_log.txt

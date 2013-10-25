@@ -1,0 +1,97 @@
+#
+# Declare the repositories we know about:
+#
+
+create repository opensim-gui
+end repository
+
+create repository opensim-core
+end repository
+
+#
+# Declare the rules
+# Note: rules must end in a slash
+#
+
+match /Trunk/(ApiDoxygen.cmake|CMakeLists.txt|Copyright.txt|CTestConfig.cmake|Doxyfile.in|FindSimbody.cmake)
+  repository opensim-core
+  prefix \1
+  branch master
+end match
+
+match /Trunk/NOTICE
+  repository opensim-core
+  prefix LICENSE.txt
+  branch master
+end match
+
+match /Trunk/Applications/
+  repository opensim-core
+  branch master
+end match
+
+match /Trunk/Gui/
+  repository opensim-gui
+  branch master
+end match
+
+match /Trunk/OpenSim/Utilities/
+  repository opensim-core
+  branch master
+end match
+
+match /Trunk/OpenSim/Tests/
+  repository opensim-core
+  branch master
+end match
+
+match /Trunk/OpenSim/Examples/
+  repository opensim-core
+  branch master
+end match
+
+match /Trunk/OpenSim/Auxiliary/
+  repository opensim-core
+  prefix Tests/
+  branch master
+end match
+
+match /Trunk/OpenSim/doc/
+  repository opensim-core
+  branch master
+end match
+
+match /Trunk/OpenSim/OpenSimDoxygenMain.h
+  repository opensim-core
+  prefix doc/
+end match
+
+match /Trunk/OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.*
+end match
+
+match /Trunk/OpenSim/
+  repository opensim-core
+  prefix OpenSim/
+  branch master
+end match
+
+match /Trunk/OpenSim/Vendors/lepton/
+  repository opensim-core
+  prefix external/
+end match
+
+#match /Trunk/
+#  repository opensim-core
+#  branch master
+#end match
+
+# Note how we can use regexp to capture the repository name
+#match /Branches/([^/]+)/
+#  repository core
+#  branch \2
+#end match
+
+match /
+end match
+
+# No tag processing

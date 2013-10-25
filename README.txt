@@ -63,6 +63,19 @@ the 5 separate repos, and then moving files, and deleting the rest of the
 files. Is there one repository (GUI) that we want to not delete the history
 for?
 
+This page is especially helpful:
+http://stackoverflow.com/questions/2982055/detach-many-subdirectories-into-a-new-separate-git-repository
+
+I also think this would be a great job for kde's svn2git, as you can specify
+to place things in subdirectories as such:
+
+match /trunk/KDE/kdesdk/doc/${NAMES}/
+  repository ${REPO}
+  branch master
+  prefix doc/
+  min revision 409203
+end match
+
 This is how we might rearrange the repositories:
 opensim-core:
 Applications -> opensim-core/applications
@@ -139,15 +152,29 @@ See http://techbase.kde.org/Projects/MoveToGit/UsingSvn2Git. Also, SVN merge his
 Information/research
 ====================
 
+SVNMapper
+---------
+Visualize branching history of an SVN repository. http://svnmapper.tigris.org/
+
 svn2git
 -------
 There are 2 things called svn2git:
 1. A C++ tool developed by KDE, that may require more configuration, but is
     faster than #2. https://gitorious.org/svn2git. This might need to run
     servers-side? This has good mechanisms for splitting an svn repository into
-    multiple git repositories.
+    multiple git repositories. To learn more, see kde-svn2git below.
 2. a Ruby wrapper of git-svn that assumes more about the structure of the SVN
     repository. https://github.com/nirvdrum/svn2git
+
+
+kde-svn2git
+-----------
+Get this in Ubuntu repositories as svn-all-fast-export. See the
+opensim2git.rules file, and the kde-svn2git target in the Makefile. Using this
+requires that you have a local copy of the WHOLE svn repository (not a working
+copy). See
+http://bob.ippoli.to/archives/2006/09/14/svnsync-mirror-your-svn-repository/
+to create such a copy (a mirror).
 
 Useful websites
 ---------------
@@ -207,6 +234,12 @@ Look at `$ man git svn`: "These additional branches are created if git svn
 cannot find a parent commit for the first commit in an SVN branch, to connect
 the branch to the history of the other branches."
 
+
+What was in the old OpenSim/Bin folder?
+---------------------------------------
+When we separate the repositories, and rip out the old history, how do we
+decide if stuff like this is preserved, and if so, in which repository? Maybe
+we don't want to edit the history.
 
 
 Decisions
