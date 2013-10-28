@@ -149,6 +149,12 @@ Check that history is how we want it
 See http://techbase.kde.org/Projects/MoveToGit/UsingSvn2Git. Also, SVN merge history may not be carried over correctly: http://blog.agavi.org/post/16865375185/fixing-svn-merge-history-in-git-repositories.
 
 
+Clean up
+--------
+Files to purge from the history:
+Opensim/Java/opensim.jar
+
+
 Information/research
 ====================
 
@@ -242,6 +248,20 @@ decide if stuff like this is preserved, and if so, in which repository? Maybe
 we don't want to edit the history.
 
 
+Should we preserve history after splitting the repository?
+----------------------------------------------------------
+As soon as we split the repository, all history is nonfunctional; it would
+just be for referencing what was done in the past. So (1) either people would
+need to refer to the old svn repository to see the (functional) history, or
+(2) we let people still access the history, to do blames or whatnot, but they
+won't be able to run the code at that point; for that they'll need to go to
+svn.
+
+When Wrapping was just Java; should that remain in the history of
+opensim-core, or in the history of Wrapping? I think the former, since it IS
+somewhat functional there.
+
+
 Decisions
 =========
 1) Keep ZLoadPoint (all that existed up to rev 1028)?
@@ -251,3 +271,4 @@ Decisions
 5) Is it okay to lose the branches for the new CFSQP repository?
 6) Naming style for git tags referring to releases? I would prefer "v3.1.0",
 etc.
+
