@@ -274,6 +274,38 @@ opensim-core, or in the history of Wrapping? I think the former, since it IS
 somewhat functional there.
 
 
+Do we actually want to split the SVN repository into multiple repositories?
+---------------------------------------------------------------------------
+
+Cons of splitting / Pro's of not splitting
+1.  The repositories can be inconsistent with each other; we'd have to specify
+    the commit of dependency repositories. This would be more complex. Are the
+    GUI and the API too coupled?
+2.  Really complicates the maintenance of history. Especially since the
+    repository has been restructured quite a bit.
+
+Pro's of splitting / Cons of not splitting
+1.  We want GUI programmers to be able to hit the ground running. We can do this
+    in 2 ways: (1) don't split the repositories, and track the SWIG output, or (2)
+    split the repositories and distribute pre-built versions of the API. Option
+    (1) violates git convention of not tracking machine-generated files, so (2)
+    seems more attractive. So splitting the repositories is one way of allowing
+    GUI programmers to hit the ground running.
+2.  Ayman has mentioned that when preparing for a release, he must spend
+    substantial time just ensuring that the GUI is consistent with the API. This
+    would not be an issue if the GUI were able to depend on a specific version of
+    the API. BUT, this dependence can be removed simply by relying on git
+    branches to ensure that Ayman works with a 'stable' version of the API.
+3.  The repository might be upwards of 1 gigabyte. Splitting would reduce the
+    size needed for people working on just one project. This comes into play
+    more when a developer is simultaneously working on two branches, and this
+    needs two clones of the repository.
+
+A third option: Keep everything in 1 repository, but maintain separate CMake
+projects. We would only have separate repositories for really decoupled
+projects. CFSQP can be in a separate repository.
+
+
 Decisions
 =========
 1) Keep ZLoadPoint (all that existed up to rev 1028)?
