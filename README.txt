@@ -182,6 +182,18 @@ copy). See
 http://bob.ippoli.to/archives/2006/09/14/svnsync-mirror-your-svn-repository/
 to create such a copy (a mirror).
 
+For us, do the following:
+
+```
+svnadmin create opensim-svn-mirror
+echo '#!/bin/sh' > opensim-svn-mirror/hooks/pre-revprop-change
+chmod +x opensim-svn-mirror/hooks/pre-revprop-change
+svnsync init file://PATH_TO/opensim-svn-mirror https://simtk.org/svn/opensim
+svnsync sync file://PATH_TO/opensim-svn-mirror
+```
+
+where, for me, PATH_TO is '/home/fitze/Documents/opensim2git/svnmirror'.
+
 Useful websites
 ---------------
 http://stackoverflow.com/questions/3009738/what-does-this-svn2git-error-mean/4434188#4434188
