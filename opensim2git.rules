@@ -78,6 +78,7 @@ end match
 match /Trunk/OpenSim/OpenSimDoxygenMain.h
   repository opensim-core
   prefix doc/
+  branch master
 end match
 
 match /Trunk/OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.*
@@ -97,6 +98,7 @@ end match
 match /Trunk/OpenSim/Vendors/lepton/
   repository opensim-core
   prefix external/
+  branch master
 end match
 
 match /Trunk/Models/
