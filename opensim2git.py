@@ -44,13 +44,16 @@ if not os.path.exists(core_dir): os.makedirs(core_dir)
 
 # Get username and password.
 username = raw_input('Enter your simtk username: ')
-password = getpass('Enter your simtk password: ')
 
 # We want the repo to end up in core_dir, so we cd there.
 with cd(core_dir) as orig_path:
 
     # Run svn2git.
-    print('Running svn2git. See %s for progress.' % core_dir)
+    print('Running svn2git.')
+    print("Enter your simtk password, hit enter, then enter your "
+            "password again, and hit enter (there's a bug). "
+            "Then, nothing will appear to happen, but don't worry, "
+            "it's working. See %s for progress." % core_dir)
 
     # Write output to log files.
     out = open('%s/svn2git_progress_log.txt' % core_dir, 'w')
@@ -59,17 +62,16 @@ with cd(core_dir) as orig_path:
     # We have to do some funky stuff to give the repo password to svn2git,
     # because its own prompt is unclear.
     # https://github.com/nirvdrum/svn2git/issues/59
-    call("echo -n '%s' | svn2git https://simtk.org/svn/opensim "
+    call("svn2git https://simtk.org/svn/opensim "
             "--trunk Trunk "
             "--tags Tags "
             "--branches Branches "
             "--authors %s/authors.txt "
             "--verbose "
             "--username %s "
-            "--metadata " % (password, orig_path, username),
+            "--metadata " % (orig_path, username),
             shell=True,
             stdout=out,
-            stderr=err,
-            )
+            stderr=err)
     out.close()
     err.close()
