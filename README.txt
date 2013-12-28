@@ -2,13 +2,55 @@ Moving the OpenSim code repository from Subversion (SVN) to Git
 ***************************************************************
 This document details the thought and procedure that went into moving OpenSim
 from an SVN repository at https://simtk.org/svn/opensim to a Git repository
-hosted primarily at https://github.com/opensim-org/opensim.
+hosted primarily at https://github.com/opensim-org/opensim. 
+
+The OpenSim GUI source code is NOT moved to git; it remains in SVN. Also, CFSQP
+is moved into a separate repository, since we are not licensed to distribute
+it.
 
 Michael Sherman moved the Simbody code repository from SVN to Git in August,
 2013. Simbody was previosly hosted at simtk.org, as well. His work provided the
 groundwork for this work.
 
 This document is written by Chris Dembia and Justin Si.
+
+Dependencies
+============
+1. Ubuntu 13.10. Subsequent versions probably work fine.
+2. svn2git 2.2.2 (https://github.com/nirvdrum/svn2git). Obtain via:
+
+    $ sudo apt-get install git-core git-svn ruby rubygems
+    $ sudo gem install svn2git
+
+3. Python 2.7.
+
+Performing the conversion
+=========================
+1. Define the environment variable OPENSIMTOGIT_LOCAL_DIR specifying the local
+   destination of the new git repository. For example:
+
+    $ export OPENSIMTOGIT_LOCAL_DIR=~/opensim_git_repos
+
+   In fact, if you do not set this environment variable yourself, we'll use the
+   value above.
+
+2. Run the python file. We actually try to obtain svn2git for you.
+
+    $ python opensim2git.py
+
+3. Now you have a 2 local repositories in OPENSIMTOGIT_LOCAL_DIR: (1)
+   opensim-core, the OpenSim API, and (2) cfsqp, the CFSQP library. This is how
+   I expect this to happen: (1) an administrator of github.com/opensim-org
+   creates an 'opensim-core' and a 'cfsqp' repository in the opensim-org
+   organization.
+
+    $ cd $OPENSIMTOGIT_LOCAL_DIR/opensim-core
+    $ git remote add opensim-org git@github.com:opensim-org/opensim-core
+    $ git push --all opensim-org
+    $ cd $OPENSIMTOGIT_LOCAL_DIR/cfsqp
+    $ git remote add opensim-org git@github.com:opensim-org/opensim-core
+    $ git push --all opensim-org
+
 
 Tasks
 =====
