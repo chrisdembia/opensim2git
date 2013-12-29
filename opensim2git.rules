@@ -16,6 +16,12 @@ end repository
 match /Trunk/Gui/
 end match
 
+match /Trunk/OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.*
+end match
+
+match /Trunk/OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.*
+end match
+
 match /Trunk/Vendors/CFSQP/
   repository cfsqp
   branch master
