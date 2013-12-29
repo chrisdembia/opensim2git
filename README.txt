@@ -23,6 +23,9 @@ Dependencies
     $ sudo gem install svn2git
 
 3. Python 2.7.
+4. fromdos command line program:
+
+    $ sudo apt-get tofrodos
 
 Performing the conversion
 =========================

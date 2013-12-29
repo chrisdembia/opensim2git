@@ -1,4 +1,3 @@
-from getpass import getpass
 import os
 import shutil
 from subprocess import call
@@ -69,6 +68,11 @@ with cd(core_dir) as orig_path:
             "--authors %s/authors.txt "
             "--verbose "
             "--username %s "
+            "--exclude 'Vendors/CFSQP/' "
+            "--exclude 'Vendors/CFSQP' "
+            "--exclude 'Vendors/CFSQP.*' "
+            "--exclude 'CFSQP.*' "
+            "--exclude '.*CFSQP.*' "
             "--metadata " % (orig_path, username),
             shell=True,
             stdout=out,
