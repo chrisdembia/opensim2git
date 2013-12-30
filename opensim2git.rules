@@ -19,9 +19,13 @@ end match
 match /Trunk/OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.*
 end match
 
+#
+# TODO this match isn't working.
 match /Trunk/OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.*
 end match
 
+#
+# This only partially works; opensim-core is still cluttered with CFSQP stuff.
 match /Trunk/Vendors/CFSQP/
   repository cfsqp
   branch master

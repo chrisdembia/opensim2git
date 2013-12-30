@@ -5,7 +5,7 @@ from subprocess import call
 import sys
 import time
 
-start_time = time.clock()
+start_time = time.time()
 
 # Preliminaries.
 # --------------
@@ -115,6 +115,7 @@ with cd(git_repos_dir):
             "--add-metadata "
             "--identity-map {0}/authors.txt "
             "--stats "
+            "--resume-from 8000 "
             "{1}".format(homebase_dir, svn_mirror_dir),
             shell=True,
             stdout=out,
@@ -125,6 +126,14 @@ with cd(git_repos_dir):
 
     out.close()
     err.close()
+
+    # Edit 'description' file, which is used by GitWeb (run `$ git instaweb`).
+    call('echo "opensim-core: SimTK OpenSim C++ libraries/applications and '
+            'Java/Python wrapping." '
+            '> %s/opensim-core/description' % git_repos_dir, shell=True)
+    call('echo "cfsqp: CFSQP optimization library, for use with '
+            'SimTK OpenSim." > %s/cfsqp/description' % git_repos_dir,
+            shell=True)
 
     # Get working copies.
     myprint('Create working-copy clones of new git repositories...')
@@ -139,19 +148,20 @@ with cd(git_repos_dir):
 # that changed the line endings. We use a different method: rewrite the
 # history.
 myprint('Normalizing line endings...')
+fspath = '/dev/shm/repo_temp'
 def normalize_line_endings(repo_name):
     repo_path = join(git_repos_dir, repo_name)
     with cd(repo_path):
-        fspath = '/dev/shm/repo_temp'
         if os.path.exists(fspath):
             os.removedirs(fspath)
         # Fix all inconsistent line endings from the history.
-        # In-memory file system: should speed up the operation.
+        # '-d' flag makes in-memory file system: should speed up the operation.
         call("git filter-branch --tree-filter '%s/normalize_line_endings.sh' "
                 "-d %s "
                 "-- --all" % (homebase_dir, fspath),
                 shell=True)
-        if os.path.exists(fspath): os.removedirs(fspath)
+        if os.path.exists(fspath):
+            os.removedirs(fspath)
 
         #  Ensure consistent line endings in the future.
         # http://stackoverflow.com/questions/1510798/trying-to-fix-line-endings-with-git-filter-branch-but-having-no-luck/1511273#1511273
@@ -163,5 +173,20 @@ normalize_line_endings('cfsqp-working-copy')
 normalize_line_endings('opensim-core-working-copy')
 
 # Tell the user how long opensim2git ran for.
-elapsed_time = time.clock() - start_time
+elapsed_time = time.time() - start_time
 myprint("Took %.1f seconds." % elapsed_time)
+
+# Garbage collect.
+# ----------------
+# Make the repositories smaller.
+myprint('Running git garbage collection to reduce repository size...')
+def git_garbage_collection(repo_name):
+    repo_path = join(git_repos_dir, repo_name)
+    with cd(repo_path):
+        call('git gc --aggressive', shell=True)
+
+git_garbage_collection('cfsqp-working-copy')
+git_garbage_collection('opensim-core-working-copy')
+
+# TODO (1) edit description file, (2) git gc, (3) cfsqp separation goes awry,
+# (4) consider starting from revision 6000 or something.

@@ -361,3 +361,36 @@ Decisions
 6) Naming style for git tags referring to releases? I would prefer "v3.1.0",
 etc.
 
+TODO When we push our repository to GitHub, we get a few notices about how big the
+repository is:
+remote: warning: GH001: Large files detected.                                       
+remote: warning: See http://git.io/iEPt8g for more information.                     
+remote: warning: File Documentation/OpenSim_Splash.psd is 65.68 MB; this is
+larger t
+han GitHub's recommended maximum file size of 50 MB                                 
+remote: warning: File Documentation/OpenSim_Splash_2_2_1.psd is 65.66 MB; this
+is la
+rger than GitHub's recommended maximum file size of 50 MB                          
+remote: warning: File Documentation/Figures/CoverArt/OpenSim_Layers.psd is
+65.05 MB;
+ this is larger than GitHub's recommended maximum file size of 50 MB                
+ remote: warning: File Documentation/OpenSim_Splash_2_2_1.psd is 65.79 MB; this
+ is la
+ rger than GitHub's recommended maximum file size of 50 MB                           
+ remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKmath_static_d.lib is
+ 53.92 
+ remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKsimbody_static_d.lib
+ is 50.
+ 86 MB; this is larger than GitHub's recommended maximum file size of 50 MB          
+ remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKmath_static_d.lib is
+ 60.48 
+ MB; this is larger than GitHub's recommended maximum file size of 50 MB             
+ remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKsimbody_static_d.lib
+ is 50.
+ 49 MB; this is larger than GitHub's recommended maximum file size of 50 MB          
+ remote: warning: File Vendors/lib/OpenSim_SimTKmath_static_d.lib is 60.48 MB;
+ this i
+ s larger than GitHub's recommended maximum file size of 50 MB                       
+ remote: warning: File Vendors/lib/OpenSim_SimTKsimbody_static_d.lib is 50.46
+ MB; thi
+ s is larger than GitHub's recommended maximum file size of 50 MB
