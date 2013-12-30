@@ -68,11 +68,12 @@ with cd(core_dir) as orig_path:
             "--authors %s/authors.txt "
             "--verbose "
             "--username %s "
-            "--exclude 'Vendors/CFSQP/' "
-            "--exclude 'Vendors/CFSQP' "
-            "--exclude 'Vendors/CFSQP.*' "
-            "--exclude 'CFSQP.*' "
-            "--exclude '.*CFSQP.*' "
+            #"--exclude 'Vendors/CFSQP/' "
+            #"--exclude 'Vendors/CFSQP' "
+            #"--exclude 'Vendors/CFSQP.*' "
+            #"--exclude 'CFSQP.*' "
+            #"--exclude '.*CFSQP.*' "
+            "--revision 8000 "
             "--metadata " % (orig_path, username),
             shell=True,
             stdout=out,
