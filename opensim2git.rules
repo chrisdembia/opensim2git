@@ -27,11 +27,13 @@ end match
 #
 # This only partially works; opensim-core is still cluttered with CFSQP stuff.
 match /Trunk/Vendors/CFSQP/
+  min revision 8000
   repository cfsqp
   branch master
 end match
 
 match /Trunk/
+  min revision 8000
   repository opensim-core
   branch master
 end match

@@ -115,7 +115,7 @@ with cd(git_repos_dir):
             "--add-metadata "
             "--identity-map {0}/authors.txt "
             "--stats "
-            "--resume-from 8000 "
+#            "--resume-from 8000 "
             "{1}".format(homebase_dir, svn_mirror_dir),
             shell=True,
             stdout=out,
@@ -127,18 +127,19 @@ with cd(git_repos_dir):
     out.close()
     err.close()
 
-    # Edit 'description' file, which is used by GitWeb (run `$ git instaweb`).
-    call('echo "opensim-core: SimTK OpenSim C++ libraries/applications and '
-            'Java/Python wrapping." '
-            '> %s/opensim-core/description' % git_repos_dir, shell=True)
-    call('echo "cfsqp: CFSQP optimization library, for use with '
-            'SimTK OpenSim." > %s/cfsqp/description' % git_repos_dir,
-            shell=True)
-
     # Get working copies.
     myprint('Create working-copy clones of new git repositories...')
     call("git clone cfsqp cfsqp-working-copy", shell=True)
     call("git clone opensim-core opensim-core-working-copy", shell=True)
+
+    # Edit 'description' file, which is used by GitWeb (run `$ git instaweb`).
+    call('echo "opensim-core: SimTK OpenSim C++ libraries/applications and '
+            'Java/Python wrapping." '
+            '> %s/opensim-core-working-copy/.git/description' % git_repos_dir,
+            shell=True)
+    call('echo "cfsqp: CFSQP optimization library, for use with '
+            'SimTK OpenSim." > %s/cfsqp-working-copy/.git/description' %
+            git_repos_dir, shell=True)
 
 # Normalize line endings.
 # Convert all line endings from CRLF (windows) to LF (unix).
@@ -172,10 +173,6 @@ def normalize_line_endings(repo_name):
 normalize_line_endings('cfsqp-working-copy')
 normalize_line_endings('opensim-core-working-copy')
 
-# Tell the user how long opensim2git ran for.
-elapsed_time = time.time() - start_time
-myprint("Took %.1f seconds." % elapsed_time)
-
 # Garbage collect.
 # ----------------
 # Make the repositories smaller.
@@ -188,5 +185,7 @@ def git_garbage_collection(repo_name):
 git_garbage_collection('cfsqp-working-copy')
 git_garbage_collection('opensim-core-working-copy')
 
-# TODO (1) edit description file, (2) git gc, (3) cfsqp separation goes awry,
-# (4) consider starting from revision 6000 or something.
+
+# Tell the user how long opensim2git ran for.
+elapsed_time = time.time() - start_time
+myprint("Took %.1f minutes." % elapsed_time / 60.0)
