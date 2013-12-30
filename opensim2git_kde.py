@@ -110,7 +110,7 @@ with cd(git_repos_dir):
     err = open('svn-all-fast-export_error_log.txt', 'w')
 
     call("svn-all-fast-export "
-            "--rules {0}/opensim2git.rules "
+            "--rules {0}/rules.conf "
             "--debug-rules "
             "--add-metadata "
             "--identity-map {0}/authors.txt "
