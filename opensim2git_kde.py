@@ -89,7 +89,7 @@ myprint('Obtaining dependencies...')
 call('sudo apt-get install svn-all-fast-export dos2unix', shell=True)
 
 # Do the rest of the operations in the OPENSIMTOGIT_LOCAL_DIR.
-class cd:
+class cd(object):
     """See http://stackoverflow.com/questions/431684/how-do-i-cd-in-python"""
     def __init__(self, new_path):
         self.new_path = new_path
@@ -98,6 +98,7 @@ class cd:
         os.chdir(self.new_path)
     def __exit__(self, etype, value, traceback):
         os.chdir(self.orig_path)
+
 
 # We want the repo to end up in git_repos_dir, so we cd there.
 with cd(git_repos_dir):
@@ -115,7 +116,7 @@ with cd(git_repos_dir):
             "--add-metadata "
             "--identity-map {0}/authors.txt "
             "--stats "
-#            "--resume-from 8000 "
+#            "--resume-from 8400 "
             "{1}".format(homebase_dir, svn_mirror_dir),
             shell=True,
             stdout=out,
@@ -126,6 +127,7 @@ with cd(git_repos_dir):
 
     out.close()
     err.close()
+
 
     # Get working copies.
     myprint('Create working-copy clones of new git repositories...')
@@ -150,19 +152,33 @@ with cd(git_repos_dir):
 # history.
 myprint('Normalizing line endings...')
 fspath = '/dev/shm/repo_temp'
+class cd_normalize(cd):
+    def __enter__(self, *args):
+        if os.path.exists(fspath): os.removedirs(fspath)
+        super(cd_normalize, self).__enter__(*args)
+    def __exit__(self, *args):
+        if os.path.exists(fspath): os.removedirs(fspath)
+        super(cd_normalize, self).__exit__(*args)
+
+# TODO so that all filter-branch stuff happens at once.
 def normalize_line_endings(repo_name):
     repo_path = join(git_repos_dir, repo_name)
-    with cd(repo_path):
-        if os.path.exists(fspath):
-            os.removedirs(fspath)
+    with cd_normalize(repo_path):
         # Fix all inconsistent line endings from the history.
         # '-d' flag makes in-memory file system: should speed up the operation.
-        call("git filter-branch --tree-filter '%s/normalize_line_endings.sh' "
+        call("git filter-branch "
+                "--force "
+                "--tree-filter '%s/normalize_line_endings.sh' "
+                "--index-filter "
+                "'git rm --cached --ignore unmatch "
+                "OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.* "
+                "OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.* "
+                "' "
+                "--prune-empty "
+                "--tag-name-filter cat "
                 "-d %s "
                 "-- --all" % (homebase_dir, fspath),
                 shell=True)
-        if os.path.exists(fspath):
-            os.removedirs(fspath)
 
         #  Ensure consistent line endings in the future.
         # http://stackoverflow.com/questions/1510798/trying-to-fix-line-endings-with-git-filter-branch-but-having-no-luck/1511273#1511273
@@ -180,7 +196,12 @@ myprint('Running git garbage collection to reduce repository size...')
 def git_garbage_collection(repo_name):
     repo_path = join(git_repos_dir, repo_name)
     with cd(repo_path):
-        call('git gc --aggressive', shell=True)
+        # Remove files from history.
+        # https://help.github.com/articles/remove-sensitive-data
+        call('rm -rf .git/refs/original', shell=True)
+        call('git reflog expire --expire=now --all', shell=True)
+        call('git gc --prune=now', shell=True)
+        call('git gc --aggressive --prune=now', shell=True)
 
 git_garbage_collection('cfsqp-working-copy')
 git_garbage_collection('opensim-core-working-copy')
@@ -188,4 +209,4 @@ git_garbage_collection('opensim-core-working-copy')
 
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time
-myprint("Took %.1f minutes." % elapsed_time / 60.0)
+myprint("Took %.1f minutes." % (elapsed_time / 60.0))
