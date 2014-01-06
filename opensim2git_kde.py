@@ -210,6 +210,12 @@ def git_garbage_collection(repo_name):
 git_garbage_collection('cfsqp-working-copy')
 git_garbage_collection('opensim-core-working-copy')
 
+# Make CFSQP a standalone project.
+# --------------------------------
+with cd(join(git_repos_dir, 'cfsqp-working-copy')):
+    # http://ariejan.net/2009/10/26/how-to-create-and-apply-a-patch-with-git/
+    call('git am --signoff < %s/cfsqp_standalone.patch' % homebase_dir,
+            shell=True)
 
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time
