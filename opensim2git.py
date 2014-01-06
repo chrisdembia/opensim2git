@@ -73,6 +73,8 @@ with cd(core_dir) as orig_path:
             #"--exclude 'Vendors/CFSQP.*' "
             #"--exclude 'CFSQP.*' "
             #"--exclude '.*CFSQP.*' "
+            "--nobranches "
+            "--notags "
             "--revision 8000 "
             "--metadata " % (orig_path, username),
             shell=True,

@@ -23,9 +23,13 @@ Dependencies
     $ sudo gem install svn2git
 
 3. Python 2.7.
-4. fromdos command line program:
+4. dos2unix command line program:
 
-    $ sudo apt-get tofrodos
+    $ sudo apt-get install dos2unix
+
+5. curl command line program, for deleting and creating GitHub repositories:
+
+    $ sudo apt-get install curl
 
 Performing the conversion
 =========================
