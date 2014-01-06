@@ -160,12 +160,14 @@ class cd_normalize(cd):
         if os.path.exists(fspath): os.removedirs(fspath)
         super(cd_normalize, self).__exit__(*args)
 
-# TODO so that all filter-branch stuff happens at once.
-def normalize_line_endings(repo_name):
+def filter_branch_tasks(repo_name):
     repo_path = join(git_repos_dir, repo_name)
     with cd_normalize(repo_path):
         # Fix all inconsistent line endings from the history.
         # '-d' flag makes in-memory file system: should speed up the operation.
+
+        # Also, remove certain files from the history.
+        # https://help.github.com/articles/remove-sensitive-data
         call("git filter-branch "
                 "--force "
                 "--tree-filter '%s/normalize_line_endings.sh' "
@@ -173,6 +175,7 @@ def normalize_line_endings(repo_name):
                 "'git rm --cached --ignore unmatch "
                 "OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.* "
                 "OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.* "
+                "Vendors/CFSQP "
                 "' "
                 "--prune-empty "
                 "--tag-name-filter cat "
@@ -184,10 +187,12 @@ def normalize_line_endings(repo_name):
         # http://stackoverflow.com/questions/1510798/trying-to-fix-line-endings-with-git-filter-branch-but-having-no-luck/1511273#1511273
         call('echo "* text=auto" >> .gitattributes', shell=True)
         call('git add .gitattributes', shell=True)
-        call('git commit -m "Introduce end-of-line normalization"', shell=True)
+        msg = ("Introduce end-of-line normalization; remove certain files from "
+                "history.")
+        call('git commit -m "%s"' % msg, shell=True)
 
-normalize_line_endings('cfsqp-working-copy')
-normalize_line_endings('opensim-core-working-copy')
+filter_branch_tasks('cfsqp-working-copy')
+filter_branch_tasks('opensim-core-working-copy')
 
 # Garbage collect.
 # ----------------
@@ -196,8 +201,7 @@ myprint('Running git garbage collection to reduce repository size...')
 def git_garbage_collection(repo_name):
     repo_path = join(git_repos_dir, repo_name)
     with cd(repo_path):
-        # Remove files from history.
-        # https://help.github.com/articles/remove-sensitive-data
+        # Remove backup of the files we deleted from the history.
         call('rm -rf .git/refs/original', shell=True)
         call('git reflog expire --expire=now --all', shell=True)
         call('git gc --prune=now', shell=True)
