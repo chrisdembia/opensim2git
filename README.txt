@@ -41,6 +41,8 @@ Performing the conversion
    In fact, if you do not set this environment variable yourself, we'll use the
    value above.
 
+   TODO define OPENSIMTOGIT_GITHUB_USERNAME.
+
 2. Run the python file. We actually try to obtain svn2git for you.
 
     $ python opensim2git.py

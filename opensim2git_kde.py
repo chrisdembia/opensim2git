@@ -39,6 +39,28 @@ def myprint(string):
 def call(command, *args, **kwargs):
     subprocess.call(command, *args, shell=True, **kwargs)
 
+# To work in a different directory.
+class cd(object):
+    """See http://stackoverflow.com/questions/431684/how-do-i-cd-in-python"""
+    def __init__(self, new_path):
+        self.new_path = new_path
+    def __enter__(self):
+        self.orig_path = os.getcwd()
+        os.chdir(self.new_path)
+    def __exit__(self, etype, value, traceback):
+        os.chdir(self.orig_path)
+
+# Descriptions of the repositories we'll create. We need this more than once.
+cfsqp_description = ('CFSQP (C implementation of Feasible Sequential '
+        'Quadratic Programming) optimization library, for use with '
+            'SimTK OpenSim.')
+opensim_core_description = ('SimTK OpenSim C++ libraries/applications and '
+            'Java/Python wrapping.')
+
+# Obtain dependencies. Requires sudo access.
+myprint('Obtaining dependencies...')
+call('sudo apt-get install svn-all-fast-export dos2unix curl')
+
 # svn mirror.
 # -----------
 myprint('Setting up svn mirror of original OpenSim repository...')
@@ -81,6 +103,9 @@ exit 1
 # Sync the mirror.
 call('svnsync sync file://%s' % svn_mirror_dir)
 
+
+# Create git repositories.
+# ------------------------
 # To prevent weird overwriting from occurring, remove the previous work.
 if os.path.exists(git_repos_dir):
     input = raw_input('Deleting pre-existing %s. Okay? (y/n) ' % git_repos_dir)
@@ -92,22 +117,6 @@ if os.path.exists(git_repos_dir):
 # Make git_repos_dir. Do this before we require the user to `sudo`, so that
 # we know the user has permission to write in git_repos_dir.
 os.makedirs(git_repos_dir)
-
-# Obtain dependencies. Requires sudo access.
-myprint('Obtaining dependencies...')
-call('sudo apt-get install svn-all-fast-export dos2unix curl')
-
-# Do the rest of the operations in the OPENSIMTOGIT_LOCAL_DIR.
-class cd(object):
-    """See http://stackoverflow.com/questions/431684/how-do-i-cd-in-python"""
-    def __init__(self, new_path):
-        self.new_path = new_path
-    def __enter__(self):
-        self.orig_path = os.getcwd()
-        os.chdir(self.new_path)
-    def __exit__(self, etype, value, traceback):
-        os.chdir(self.orig_path)
-
 
 # We want the repo to end up in git_repos_dir, so we cd there.
 with cd(git_repos_dir):
@@ -143,13 +152,12 @@ with cd(git_repos_dir):
     call("git clone opensim-core opensim-core-working-copy")
 
     # Edit 'description' file, which is used by GitWeb (run `$ git instaweb`).
-    call('echo "opensim-core: SimTK OpenSim C++ libraries/applications and '
-            'Java/Python wrapping." '
-            '> %s/opensim-core-working-copy/.git/description' % git_repos_dir,
-            )
-    call('echo "cfsqp: CFSQP optimization library, for use with '
-            'SimTK OpenSim." > %s/cfsqp-working-copy/.git/description' %
-            git_repos_dir)
+    call('echo "opensim-core: %s" '
+            '> %s/opensim-core-working-copy/.git/description' % (
+                opensim_core_description, git_repos_dir))
+
+    call('echo "cfsqp: %s" > %s/cfsqp-working-copy/.git/description' % (
+        opensim_core_description, git_repos_dir))
 
 # Normalize line endings.
 # Convert all line endings from CRLF (windows) to LF (unix).
@@ -180,7 +188,7 @@ def filter_branch_tasks(repo_name):
                 "--force "
                 "--tree-filter '%s/normalize_line_endings.sh' "
                 "--index-filter "
-                "'git rm --cached --ignore unmatch "
+                "'git rm -r --cached --ignore unmatch "
                 "OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.* "
                 "OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.* "
                 "Vendors/CFSQP "
@@ -195,9 +203,7 @@ def filter_branch_tasks(repo_name):
         # http://stackoverflow.com/questions/1510798/trying-to-fix-line-endings-with-git-filter-branch-but-having-no-luck/1511273#1511273
         call('echo "* text=auto" >> .gitattributes')
         call('git add .gitattributes')
-        msg = ("Introduce end-of-line normalization; remove certain files from "
-                "history.")
-        call('git commit -m "%s"' % msg)
+        call('git commit -m "Introduce end-of-line normalization."')
 
 filter_branch_tasks('cfsqp-working-copy')
 filter_branch_tasks('opensim-core-working-copy')
@@ -224,20 +230,39 @@ with cd(join(git_repos_dir, 'cfsqp-working-copy')):
     call('cp %s/CMakeLists_cfsqp_standalone.txt CMakeLists.txt' % homebase_dir)
     call('git commit -am"Make this project standalone."')
 
-# Tell the user how long opensim2git ran for.
-elapsed_time = time.time() - start_time
-myprint("Took %.1f minutes." % (elapsed_time / 60.0))
 
 # Put the repositories on GitHub.
 # -------------------------------
-def delete_and_create_github_repo(local_relpath, github_name):
+def push_to_github(local_relpath, github_name, description, private):
     # For background, see `man curl` and
     # http://developer.github.com/v3/repos/.
 
     # Delete the repository on GitHub, in case it already exists.
-    call("curl -i -u {0} -X DELETE "
+    call("curl -u {0} -X DELETE "
             "'https://api.github.com/repos/{0}/{1}'".format(github_username,
                 github_name))
 
-delete_and_create_github_repo('cfsqp-working-copy', 'cfsqp')
-delete_and_create_github_repo('opensim-core-working-copy', 'opensim-core')
+    # Create the new repository.
+    # http://developer.github.com/guides/getting-started/#create-a-repository
+    json_parameters = ('{"name":"%s", '
+            '"description": "%s", '
+            '"auto_init": false, '
+            '"private": %s, '
+            '"gitignore_template": "C++"}' % (github_name, description,
+                private))
+    call("curl -u {0} -d '{1}' https://api.github.com/user/repos".format(
+        github_username, json_parameters))
+
+    with cd(os.path.join(git_repos_dir, local_relpath)):
+        call('git remote add {0} git@github.com:{0}/{1}.git'.format(
+            github_username, github_name))
+        call('git push origin --all')
+
+push_to_github('cfsqp-working-copy', 'cfsqp', cfsqp_description,
+        'true')
+push_to_github('opensim-core-working-copy', 'opensim-core',
+        opensim_core_description, 'false')
+
+# Tell the user how long opensim2git ran for.
+elapsed_time = time.time() - start_time
+myprint("Took %.1f minutes." % (elapsed_time / 60.0))
