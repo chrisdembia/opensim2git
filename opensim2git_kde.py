@@ -1,9 +1,10 @@
 import os
 from os.path import join
 import shutil
-import subprocess
 import sys
 import time
+
+from common import *
 
 start_time = time.time()
 
@@ -11,51 +12,12 @@ start_time = time.time()
 # --------------
 opensim_svn_url = 'https://simtk.org/svn/opensim'
 
-# Find out where we'll be putting the local repositories.
-if 'OPENSIMTOGIT_LOCAL_DIR' in os.environ:
-    local_dir = os.environ['OPENSIMTOGIT_LOCAL_DIR']
-else:
-    local_dir = os.path.expanduser('~/opensim2git_local')
-
-# Find out where we'll be publishing the repositories on GitHub.
-if 'OPENSIMTOGIT_GITHUB_USERNAME' in os.environ:
-    github_username = os.environ['OPENSIMTOGIT_GITHUB_USERNAME']
-else:
-    github_username = raw_input('Enter your GitHub username: ')
-
 # Where are we right now? This SHOULD be the location of the opensim2git git
 # repository.
 homebase_dir = os.getcwd()
 
-# This is where we'll put the git repositories.
-git_repos_dir = join(local_dir, 'git_repos')
-
 # We need a local mirror of the svn repository.
 svn_mirror_dir = join(local_dir, 'svn_mirror')
-
-def myprint(string):
-    print("\n[opensim2git] %s" % string)
-
-def call(command, *args, **kwargs):
-    subprocess.call(command, *args, shell=True, **kwargs)
-
-# To work in a different directory.
-class cd(object):
-    """See http://stackoverflow.com/questions/431684/how-do-i-cd-in-python"""
-    def __init__(self, new_path):
-        self.new_path = new_path
-    def __enter__(self):
-        self.orig_path = os.getcwd()
-        os.chdir(self.new_path)
-    def __exit__(self, etype, value, traceback):
-        os.chdir(self.orig_path)
-
-# Descriptions of the repositories we'll create. We need this more than once.
-cfsqp_description = ('CFSQP (C implementation of Feasible Sequential '
-        'Quadratic Programming) optimization library, for use with '
-            'SimTK OpenSim.')
-opensim_core_description = ('SimTK OpenSim C++ libraries/applications and '
-            'Java/Python wrapping.')
 
 # Obtain dependencies. Requires sudo access.
 myprint('Obtaining dependencies...')
@@ -135,6 +97,7 @@ with cd(git_repos_dir):
             "--identity-map {0}/authors.txt "
             "--stats "
 #            "--resume-from 8400 "
+#            "--max-rev 1095 "
             "{1}".format(homebase_dir, svn_mirror_dir),
             stdout=out,
             stderr=err,
@@ -167,7 +130,7 @@ with cd(git_repos_dir):
 # that changed the line endings. We use a different method: rewrite the
 # history.
 myprint('Normalizing line endings...')
-fspath = '/dev/shm/repo_temp'
+fspath = '/dev/shm/opensim2git_temp_repo'
 class cd_normalize(cd):
     def __enter__(self, *args):
         if os.path.exists(fspath): os.removedirs(fspath)
@@ -191,7 +154,7 @@ def filter_branch_tasks(repo_name):
                 "'git rm -r --cached --ignore unmatch "
                 "OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.* "
                 "OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.* "
-                "Vendors/CFSQP "
+                #"Vendors/CFSQP "
                 "' "
                 "--prune-empty "
                 "--tag-name-filter cat "
@@ -228,40 +191,8 @@ git_garbage_collection('opensim-core-working-copy')
 # --------------------------------
 with cd(join(git_repos_dir, 'cfsqp-working-copy')):
     call('cp %s/CMakeLists_cfsqp_standalone.txt CMakeLists.txt' % homebase_dir)
-    call('git commit -am"Make this project standalone."')
-
-
-# Put the repositories on GitHub.
-# -------------------------------
-def push_to_github(local_relpath, github_name, description, private):
-    # For background, see `man curl` and
-    # http://developer.github.com/v3/repos/.
-
-    # Delete the repository on GitHub, in case it already exists.
-    call("curl -u {0} -X DELETE "
-            "'https://api.github.com/repos/{0}/{1}'".format(github_username,
-                github_name))
-
-    # Create the new repository.
-    # http://developer.github.com/guides/getting-started/#create-a-repository
-    json_parameters = ('{"name":"%s", '
-            '"description": "%s", '
-            '"auto_init": false, '
-            '"private": %s, '
-            '"gitignore_template": "C++"}' % (github_name, description,
-                private))
-    call("curl -u {0} -d '{1}' https://api.github.com/user/repos".format(
-        github_username, json_parameters))
-
-    with cd(os.path.join(git_repos_dir, local_relpath)):
-        call('git remote add {0} git@github.com:{0}/{1}.git'.format(
-            github_username, github_name))
-        call('git push origin --all')
-
-push_to_github('cfsqp-working-copy', 'cfsqp', cfsqp_description,
-        'true')
-push_to_github('opensim-core-working-copy', 'opensim-core',
-        opensim_core_description, 'false')
+    call('git add CMakeLists.txt')
+    call('git commit -m"Make this project standalone."')
 
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time

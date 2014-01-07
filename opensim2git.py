@@ -68,14 +68,11 @@ with cd(core_dir) as orig_path:
             "--authors %s/authors.txt "
             "--verbose "
             "--username %s "
-            #"--exclude 'Vendors/CFSQP/' "
-            #"--exclude 'Vendors/CFSQP' "
-            #"--exclude 'Vendors/CFSQP.*' "
-            #"--exclude 'CFSQP.*' "
-            #"--exclude '.*CFSQP.*' "
-            "--nobranches "
+            "--exclude '.*CFSQP.*' "
+            "--exclude 'Gui' "
+            "--nobranches " # TODO YES branches once svn2git is fixed.
             "--notags "
-            "--revision 8000 "
+            "--revision 6663 "
             "--metadata " % (orig_path, username),
             shell=True,
             stdout=out,

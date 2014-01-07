@@ -61,6 +61,9 @@ Performing the conversion
     $ git push --all opensim-org
 
 
+In revision 6663, the repository was reorganized. Thus, it seems to make sense
+to start the git repository from this revision.
+
 Tasks
 =====
 This conversion requires a few tasks beyond what one would normally assume a
