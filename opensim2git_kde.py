@@ -6,15 +6,14 @@ import time
 
 from common import *
 
-start_time = time.time()
-
 # Preliminaries.
 # --------------
-opensim_svn_url = 'https://simtk.org/svn/opensim'
+start_time = time.time()
 
-# Where are we right now? This SHOULD be the location of the opensim2git git
-# repository.
-homebase_dir = os.getcwd()
+# This is where we'll put the git repositories.
+git_repos_dir = os.path.join(local_dir, 'kde_git_repos')
+
+opensim_svn_url = 'https://simtk.org/svn/opensim'
 
 # We need a local mirror of the svn repository.
 svn_mirror_dir = join(local_dir, 'svn_mirror')
@@ -120,7 +119,7 @@ with cd(git_repos_dir):
                 opensim_core_description, git_repos_dir))
 
     call('echo "cfsqp: %s" > %s/cfsqp-working-copy/.git/description' % (
-        opensim_core_description, git_repos_dir))
+        cfsqp_description, git_repos_dir))
 
 # Normalize line endings.
 # Convert all line endings from CRLF (windows) to LF (unix).

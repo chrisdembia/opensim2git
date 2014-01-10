@@ -1,4 +1,11 @@
+"""
+Example:
+    $ ipython push_repositories_to_github.py ~/opensim2git_local/ruby_git_repos
+
+"""
+
 import os
+import sys
 
 from common import *
 
@@ -6,6 +13,14 @@ from common import *
 # --------------
 myprint('Obtaining dependencies...')
 call('sudo apt-get install curl')
+
+git_repos_dir = sys.argv[1]
+
+# Find out where we'll be publishing the repositories on GitHub.
+if 'OPENSIMTOGIT_GITHUB_USERNAME' in os.environ:
+    github_username = os.environ['OPENSIMTOGIT_GITHUB_USERNAME']
+else:
+    github_username = raw_input('Enter your GitHub username: ')
 
 # Put the repositories on GitHub.
 # -------------------------------
@@ -34,7 +49,7 @@ def push_to_github(local_relpath, github_name, description, private):
             github_username, github_name))
         call('git push {0} --all'.format(github_username))
 
-push_to_github('cfsqp-working-copy', 'cfsqp', cfsqp_description,
+push_to_github('cfsqp', 'cfsqp', cfsqp_description,
         'true')
-push_to_github('opensim-core-working-copy', 'opensim-core',
+push_to_github('opensim-core', 'opensim-core',
         opensim_core_description, 'true')

@@ -1,20 +1,15 @@
 import os
 import subprocess
 
+# Where are we right now? This SHOULD be the location of the opensim2git git
+# repository.
+homebase_dir = os.getcwd()
+
 # Find out where we'll be putting the local repositories.
 if 'OPENSIMTOGIT_LOCAL_DIR' in os.environ:
     local_dir = os.environ['OPENSIMTOGIT_LOCAL_DIR']
 else:
     local_dir = os.path.expanduser('~/opensim2git_local')
-
-# Find out where we'll be publishing the repositories on GitHub.
-if 'OPENSIMTOGIT_GITHUB_USERNAME' in os.environ:
-    github_username = os.environ['OPENSIMTOGIT_GITHUB_USERNAME']
-else:
-    github_username = raw_input('Enter your GitHub username: ')
-
-# This is where we'll put the git repositories.
-git_repos_dir = os.path.join(local_dir, 'git_repos')
 
 def myprint(string):
     print("\n[opensim2git] %s" % string)

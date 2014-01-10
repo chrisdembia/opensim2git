@@ -403,3 +403,10 @@ remote: warning: File Documentation/Figures/CoverArt/OpenSim_Layers.psd is
  remote: warning: File Vendors/lib/OpenSim_SimTKsimbody_static_d.lib is 50.46
  MB; thi
  s is larger than GitHub's recommended maximum file size of 50 MB
+
+
+ Keep models or not?
+ ===================
+ The OutputReference left in repo: 217M, 820M with working copy
+ Remove OutputReference from history: 141M, 383M with working copy
+ (with only Trunk; no branches)
