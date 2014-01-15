@@ -58,6 +58,7 @@ with cd(cfsqp_dir):
     out = open('%s/svn2git_progress_log.txt' % cfsqp_dir, 'w')
     err = open('%s/svn2git_error_log.txt' % cfsqp_dir, 'w')
 
+    # TODO subprocess.call may be causing the threading issues.
     call("svn2git https://simtk.org/svn/opensim "
             "--trunk Trunk/Vendors/CFSQP "
             "--authors %s/authors.txt "
@@ -88,9 +89,12 @@ with cd(opensim_core_dir):
 
     # I found most of these files using lines like: 
     # $ git verify-pack -v .git/objects/pack/<PACKFILE>.idx | sort -k 3 -n | \
-    # tail -20
+    #      tail -20
+    # % git rev-list --objects --all | grep <COMMIT HASH>
     # from
     # http://git-scm.com/book/ca/Git-Internals-Maintenance-and-Data-Recovery
+    # Here's another good blog post:
+    # http://blog.jessitron.com/2013/08/finding-and-removing-large-files-in-git.html
     call("svn2git https://simtk.org/svn/opensim "
             "--trunk Trunk "
             "--tags Tags "
@@ -100,6 +104,7 @@ with cd(opensim_core_dir):
             "--username %s "
             "--exclude '.*CFSQP.*' "
             "--exclude 'Gui' "
+            "--exclude 'OpenSim/Applications/Gui' "
             "--exclude 'Installer' "
             "--exclude 'NSIS.InstallOptions.ini.in' "
             "--exclude 'NSIS.template.in' "
@@ -115,10 +120,18 @@ with cd(opensim_core_dir):
             "--exclude 'Models/Gait2354_Simbody/OutputReference' "
             "--exclude 'Models/Gait2392_Simbody/OutputReference' "
             "--exclude 'Models/Leg6Dof9Musc/Stance/Reference' "
-            "--exclude 'OpenSim/Examples/ControllerExample/OutputReference' "
-            "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference' "
-            "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference' "
-            "--exclude 'OpenSim/Examples/ExampleMain/OutputReference' "
+            "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.sto' "
+            "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.mot' "
+            "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.osim' "
+            "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.sto' "
+            "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.mot' "
+            "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.osim' "
+            "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.sto' "
+            "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.mot' "
+            "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.osim' "
+            "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.sto' "
+            "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.mot' "
+            "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.osim' "
             "--exclude 'Documentation/OpenSim_Splash.psd' "
             "--exclude 'Documentation/OpenSim_Splash_2_2_1.psd' "
             "--exclude 'OpenSim/Wrapping/Python/pyOpenSim_wrap.cxx' "
@@ -128,9 +141,24 @@ with cd(opensim_core_dir):
             "--exclude 'OpenSim/Utilities/importOldModels/xerces-c_2_7.dll' "
             "--exclude 'Vendors/xerces-c_2_8_0' "
             "--exclude 'Vendors/vtk_dll' "
+            # Above exclude's are for r6665 and after.
+            # Below exclude's are for r6664 and earlier.
+            "--exclude 'Vendors/xerces-c-src_2_7_0' "
+            "--exclude 'Vendors/xerces-c-src_2_4_0' "
+            "--exclude 'Vendors/xerces-c-src2_4_0' "
+            "--exclude 'OpenSim/Examples/Gait2354_Simbody/OutputReference' "
+            "--exclude 'OpenSim/Examples/Gait2392_Simbody/OutputReference' "
+            "--exclude 'Documentation' "
+            "--exclude 'Vendors/lib' "
+            "--exclude 'Vendors/core' "
+            "--exclude 'Vendors/SimTK' "
+            "--exclude 'OpenSim/Examples/Gait/OutputReference' "
+            "--exclude 'OpenSim/Examples/Leg39/OutputReference' "
+            "--exclude 'OpenSim/Examples/Gait2354/OutputReference' "
+            "--exclude 'Specs' "
             "--nobranches " # TODO YES branches once svn2git is fixed.
             "--notags "
-            "--revision 6665 "
+            #"--revision 6665 "
             "--metadata " % (homebase_dir, username),
             stdout=out,
             stderr=err)
