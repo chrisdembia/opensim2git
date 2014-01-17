@@ -1,0 +1,40 @@
+1. make a mirror of svn
+2. kde svn2git - remove GUI and CFSQP
+3. 
+
+we are not worried about keeping the history.
+
+which branches do we keep?
+
+update mirror of svn.
+
+
+1. why does cfsqp go awry?
+2. how come starting from a later revision doesn't get all the files? we're not
+starting from the state of the repo at that point....
+3. get cfsqp repository to compile.
+4. OpenSimJNI_wrap.(cxx|h) is not geting matched.
+5. try compiling.
+6. preserve certain branches.
+
+Using filter-branch to remove CFSQP takes a lot longer than using kde-svn2git
+to do it. It exists in every commit; every commit needs to be rewritten?
+
+WARN: SVN reports a "copy from" @ 1053 from /Vendors @ 1052 but no matching
+rules found! Ignoring copy, treating as a modification
+
+remove all history before revision 6662.
+http://stackoverflow.com/questions/7459209/git-how-to-remove-history-before-a-specific-commit
+
+- make sure that opensim-core is a standalonep roject.
+
+REMOVE historical doxygen stuff.
+
+leave models in subversion.
+
+DO NOT COPY simbody libraries into the opensim installation, unless you're on
+windows?
+
+1. build example output reference automatically.
+2. make opensim a nice independent project, modify the Trunk so that it depends
+ on OpenSim.
