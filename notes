@@ -38,3 +38,13 @@ windows?
 1. build example output reference automatically.
 2. make opensim a nice independent project, modify the Trunk so that it depends
  on OpenSim.
+
+ 20140117:
+ -branch deleting / moving branches to tags
+ -figure out merge history: edit commit parents to represent if/when branches
+    were merged back in. (email Ayman).
+ -make standalone (remove cmake references to Gui folder, etc)
+ -edit svn Trunk (create a patch) to make GUI find now-separate OpenSim install
+ -clean up documentation of what opensim2git does, how to get it to run
+ -continue removing files from the history to make the repository smaller.
+ -make sure line endings are actually fixed.

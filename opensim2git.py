@@ -14,7 +14,12 @@ git_repos_dir = os.path.join(local_dir, 'ruby_git_repos')
 # Try to install svn2git.
 myprint('Obtaining dependencies...')
 os.system('sudo apt-get install git-core git-svn ruby rubygems')
-os.system('sudo gem install svn2git')
+
+with cd('svn2git'):
+    os.system('git submodule init')
+    os.system('git submodule update')
+    os.system('gem build svn2git.gemspec')
+    os.system('sudo gem install svn2git-2.2.2.gem')
 
 # To prevent weird overwriting from occurring, remove the previous work.
 if os.path.exists(git_repos_dir):
@@ -156,8 +161,6 @@ with cd(opensim_core_dir):
             "--exclude 'OpenSim/Examples/Leg39/OutputReference' "
             "--exclude 'OpenSim/Examples/Gait2354/OutputReference' "
             "--exclude 'Specs' "
-            "--nobranches " # TODO YES branches once svn2git is fixed.
-            "--notags "
             #"--revision 6665 "
             "--metadata " % (homebase_dir, username),
             stdout=out,
@@ -210,6 +213,49 @@ def filter_branch_tasks(repo_path):
 filter_branch_tasks(cfsqp_dir)
 filter_branch_tasks(opensim_core_dir)
 
+# Clean up OpenSim branches.
+# --------------------------
+# 0. TODO branches are merged in at some point.
+# 1. Convert previous branches to tags.
+# 2. Delete branches that we are not interested in.
+# 3. Are svn tags the real releases, or should we use the head of the related
+# brances? They are not the same.
+
+# Before deleting anything, fix the merge history.
+# ------------------------------------------------
+# http://blog.agavi.org/post/16865375185/fixing-svn-merge-history-in-git-repositories
+
+# Delete svn remote and branches.
+def delete_svn_remote_and_branches(repo_path):
+    with cd(repo_path):
+        call('git config --remove-section svn-remote.svn')
+        call('git config --remove-section svn')
+        call('rm -rf .git/svn')
+        call('git branch -d -r svn/trunk')
+
+# TODO this still doesn't delete the other svn branches?
+delete_svn_remote_and_branches(opensim_core_dir)
+delete_svn_remote_and_branches(cfsqp_dir)
+
+def convert_branch_to_tag(branch_name, tag_name):
+    call('git checkout %s' % branch_name)
+    call('git tag %s' % tag_name)
+    call('git checkout master')
+    call('git branch %s -D' % branch_name)
+def delete_branch(branch_name):
+    call('git branch %s -D' % branch_name)
+
+with cd(opensim_core_dir):
+    # TODO take care of pre-r6663 branches.
+    # TODO just rename existing tags.
+    # TODO convert_branch_to_tag('CableWrapping', 'cable-wrapping')
+    convert_branch_to_tag('ModelBuilding', 'model-building')
+    convert_branch_to_tag('OpenSim30', 'OpenSim-3.0')
+    convert_branch_to_tag('OpenSim31', 'OpenSim-3.1')
+    convert_branch_to_tag('OpenSimWW01', 'OpenSim-WW')
+    delete_branch('OpenSim30GUI')
+    delete_branch('Remove_Xerces')
+
 # Garbage collect.
 # ----------------
 # Make the repositories smaller.
@@ -231,7 +277,7 @@ git_garbage_collection(opensim_core_dir)
 with cd(cfsqp_dir):
     call('cp %s/CMakeLists_cfsqp_standalone.txt CMakeLists.txt' % homebase_dir)
     call('git add CMakeLists.txt')
-    call('git commit -m"Make this project standalone."')
+    call('git commit -m"Edit CMake files to make this project standalone."')
 
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time

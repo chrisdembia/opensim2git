@@ -47,7 +47,7 @@ def push_to_github(local_relpath, github_name, description, private):
     with cd(os.path.join(git_repos_dir, local_relpath)):
         call('git remote add {0} git@github.com:{0}/{1}.git'.format(
             github_username, github_name))
-        call('git push {0} --all'.format(github_username))
+        call('git push {0} --all --tags'.format(github_username))
 
 push_to_github('cfsqp', 'cfsqp', cfsqp_description,
         'true')
