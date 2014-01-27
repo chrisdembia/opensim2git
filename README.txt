@@ -1,108 +1,84 @@
 Moving the OpenSim code repository from Subversion (SVN) to Git
-***************************************************************
+===============================================================
 This document details the thought and procedure that went into moving OpenSim
 from an SVN repository at https://simtk.org/svn/opensim to a Git repository
 hosted primarily at https://github.com/opensim-org/opensim. 
 
 The OpenSim GUI source code is NOT moved to git; it remains in SVN. Also, CFSQP
 is moved into a separate repository, since we are not licensed to distribute
-it.
+it. This package contains a script that creates two git repositories, cfsqp,
+and opensim-core. The package also contains a script to push these repositories
+to GitHub.
 
 Michael Sherman moved the Simbody code repository from SVN to Git in August,
-2013. Simbody was previosly hosted at simtk.org, as well. His work provided the
-groundwork for this work.
+2013. Simbody was previosly hosted at simtk.org, as well. His conversino
+provided the groundwork for this conversion.
 
 This document is written by Chris Dembia and Justin Si.
 
 Dependencies
 ============
 1. Ubuntu 13.10. Subsequent versions probably work fine.
-2. svn2git 2.2.2 (https://github.com/nirvdrum/svn2git). Obtain via:
+2. Python 2.7.
 
-    $ sudo apt-get install git-core git-svn ruby rubygems
-    $ sudo gem install svn2git
+The remaining dependencies are installed automatically:
 
-3. Python 2.7.
-4. dos2unix command line program:
+    * curl: for deleting and creating repositories on the GitHub website.
+    * git-core, git-svn, ruby, rubygems: for instaling svn2git.
+    * svn2git: a submodule in this repo, which we install automatically.
 
-    $ sudo apt-get install dos2unix
+Note that the version of svn2git we use is our own fork of svn2git. We made a
+fork to implement a bugfix that was mentioned in the svn2git issues, but was
+never fixed in an official release of svn2git.
 
-5. curl command line program, for deleting and creating GitHub repositories:
-
-    $ sudo apt-get install curl
 
 Performing the conversion
 =========================
-1. Define the environment variable OPENSIMTOGIT_LOCAL_DIR specifying the local
-   destination of the new git repository. For example:
+1. Define the following environment variables (if not, defaults will be used):
+
+    * OPENSIMTOGIT_LOCAL_DIR: We'll write the new git repositories to this
+      location on your disk. Default: ~/opensim2git_local
+    * OPENSIMTOGIT_GITHUB_USERNAME: We will create and push the new
+      repositories to this account.
+
+You can temporarily set environment variables by running the following in a
+terminal::
 
     $ export OPENSIMTOGIT_LOCAL_DIR=~/opensim_git_repos
 
-   In fact, if you do not set this environment variable yourself, we'll use the
-   value above.
 
-   TODO define OPENSIMTOGIT_GITHUB_USERNAME.
+2. Run the script that does the svn2git conversion and creates git repositories
+   on your local machine::
 
-2. Run the python file. We actually try to obtain svn2git for you.
+        $ python opensim2git.py
 
-    $ python opensim2git.py
+   This script does the following:
 
-3. Now you have a 2 local repositories in OPENSIMTOGIT_LOCAL_DIR: (1)
-   opensim-core, the OpenSim API, and (2) cfsqp, the CFSQP library. This is how
-   I expect this to happen: (1) an administrator of github.com/opensim-org
-   creates an 'opensim-core' and a 'cfsqp' repository in the opensim-org
-   organization.
+   * Runs svn2git twice; once for cfsqp, and once for opensim-core. Excludes
+     files various from the new openism-core repository.
+   * Runs filter-branch to ensure that line endings are ALWAYS only LF (\n,
+     UNIX line endings). The reason why this is important is that some files
+     have Windows line endings (CRLF, \r\n).
+   * Delete old SVN branches/tags, convert some of them to git tags.
+   * Repair merge history (SVN merges are not picked up by git).
+   * Run git garbage collection on the local git repositories.
+   * Add commits to both git repos that modify CMake files so that when the
+     repos are pushed to GitHub, they are functional (the projects don't expect
+     the now-missing directories).
 
-    $ cd $OPENSIMTOGIT_LOCAL_DIR/opensim-core
-    $ git remote add opensim-org git@github.com:opensim-org/opensim-core
-    $ git push --all opensim-org
-    $ cd $OPENSIMTOGIT_LOCAL_DIR/cfsqp
-    $ git remote add opensim-org git@github.com:opensim-org/opensim-core
-    $ git push --all opensim-org
+3. Run the script that pushes the local git repositories to GitHub::
 
+        $ python push_repositories_to_github.py
+
+4. Transfer the git repositories to opensim-org.
 
 In revision 6663, the repository was reorganized. Thus, it seems to make sense
 to start the git repository from this revision.
 
-Tasks
-=====
-This conversion requires a few tasks beyond what one would normally assume a
-Git conversion would entail. Some of these tasks are done during the svn2git
-conversion, while others are performed after the svn2git conversion and before
-the repository is pushed to Github.
-
-1. Remove CFSQP from the core repository.
-2. Normalize all line endings to UNIX line endings.
-3. Split the repository into multiple repositories (core, gui, models,
-        wrapping, cfsqp).
-4. Convert branches into tags, and decide which branches can be deleted
-        (irreversibly).
-5. Check that history is how we want it.
-6. Clean up history, if necessary (to reduce repository size).
-7. Push the repositories to github.com/opensim-org.
-
-The hope is to have a Makefile that, when running `$ make`, will take care of
-all these tasks for us.
-
-Removing CFSQP
---------------
--CFSQP enters the code repository at r1052
--try using nominimizeurl option to svn2git
--Can do this in three ways:
-    1. svn2git --exclude/--ignore flag
-    2. git filter-branch after cloning.
-    3. git subtree (see GitHub help page about this).
-
-
-Normalize line endings
-----------------------
-This is easy to do; Sherm has done it, but I'm not sure at what point it should
-occur, relative too everything else. The reason why this is important is that
-some files have windows line endings (LFCR or something), while some have unix
-line endings (CR). See
-http://blog.gyoshev.net/2013/08/normalizing-line-endings-in-git-repositories/.
-Chris advises that we use filter-branch.
-
+Historical sections
+===================
+Below are old parts of this README that could have been deleted. However, I
+decied to keep these here just so the thoughts aren't lost.
 
 Split the repository into multiple
 ----------------------------------
@@ -369,40 +345,6 @@ Decisions
 5) Is it okay to lose the branches for the new CFSQP repository?
 6) Naming style for git tags referring to releases? I would prefer "v3.1.0",
 etc.
-
-TODO When we push our repository to GitHub, we get a few notices about how big the
-repository is:
-remote: warning: GH001: Large files detected.                                       
-remote: warning: See http://git.io/iEPt8g for more information.                     
-remote: warning: File Documentation/OpenSim_Splash.psd is 65.68 MB; this is
-larger t
-han GitHub's recommended maximum file size of 50 MB                                 
-remote: warning: File Documentation/OpenSim_Splash_2_2_1.psd is 65.66 MB; this
-is la
-rger than GitHub's recommended maximum file size of 50 MB                          
-remote: warning: File Documentation/Figures/CoverArt/OpenSim_Layers.psd is
-65.05 MB;
- this is larger than GitHub's recommended maximum file size of 50 MB                
- remote: warning: File Documentation/OpenSim_Splash_2_2_1.psd is 65.79 MB; this
- is la
- rger than GitHub's recommended maximum file size of 50 MB                           
- remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKmath_static_d.lib is
- 53.92 
- remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKsimbody_static_d.lib
- is 50.
- 86 MB; this is larger than GitHub's recommended maximum file size of 50 MB          
- remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKmath_static_d.lib is
- 60.48 
- MB; this is larger than GitHub's recommended maximum file size of 50 MB             
- remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKsimbody_static_d.lib
- is 50.
- 49 MB; this is larger than GitHub's recommended maximum file size of 50 MB          
- remote: warning: File Vendors/lib/OpenSim_SimTKmath_static_d.lib is 60.48 MB;
- this i
- s larger than GitHub's recommended maximum file size of 50 MB                       
- remote: warning: File Vendors/lib/OpenSim_SimTKsimbody_static_d.lib is 50.46
- MB; thi
- s is larger than GitHub's recommended maximum file size of 50 MB
 
 
  Keep models or not?
