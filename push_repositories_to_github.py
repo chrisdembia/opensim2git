@@ -14,7 +14,7 @@ from common import *
 myprint('Obtaining dependencies...')
 call('sudo apt-get install curl')
 
-git_repos_dir = sys.argv[1]
+git_repos_dir = os.path.join(local_dir, 'ruby_git_repos')
 
 # Find out where we'll be publishing the repositories on GitHub.
 if 'OPENSIMTOGIT_GITHUB_USERNAME' in os.environ:
@@ -47,9 +47,10 @@ def push_to_github(local_relpath, github_name, description, private):
     with cd(os.path.join(git_repos_dir, local_relpath)):
         call('git remote add {0} git@github.com:{0}/{1}.git'.format(
             github_username, github_name))
-        call('git push {0} --all --tags'.format(github_username))
+        call('git push {0} --all'.format(github_username))
+        call('git push {0} --tags'.format(github_username))
 
 push_to_github('cfsqp', 'cfsqp', cfsqp_description,
         'true')
 push_to_github('opensim-core', 'opensim-core',
-        opensim_core_description, 'true')
+        opensim_core_description, 'false')

@@ -233,9 +233,9 @@ def delete_svn_remote_and_branches(repo_path):
         call('rm -rf .git/svn')
         call('git branch -d -r svn/trunk')
 
-# TODO this still doesn't delete the other svn branches?
-delete_svn_remote_and_branches(opensim_core_dir)
-delete_svn_remote_and_branches(cfsqp_dir)
+## TODO this still doesn't delete the other svn branches?
+#delete_svn_remote_and_branches(opensim_core_dir)
+#delete_svn_remote_and_branches(cfsqp_dir)
 
 def convert_branch_to_tag(branch_name, tag_name):
     call('git checkout %s' % branch_name)
@@ -245,16 +245,16 @@ def convert_branch_to_tag(branch_name, tag_name):
 def delete_branch(branch_name):
     call('git branch %s -D' % branch_name)
 
-with cd(opensim_core_dir):
-    # TODO take care of pre-r6663 branches.
-    # TODO just rename existing tags.
-    # TODO convert_branch_to_tag('CableWrapping', 'cable-wrapping')
-    convert_branch_to_tag('ModelBuilding', 'model-building')
-    convert_branch_to_tag('OpenSim30', 'OpenSim-3.0')
-    convert_branch_to_tag('OpenSim31', 'OpenSim-3.1')
-    convert_branch_to_tag('OpenSimWW01', 'OpenSim-WW')
-    delete_branch('OpenSim30GUI')
-    delete_branch('Remove_Xerces')
+#with cd(opensim_core_dir):
+#    # TODO take care of pre-r6663 branches.
+#    # TODO just rename existing tags.
+#    # TODO convert_branch_to_tag('CableWrapping', 'cable-wrapping')
+#    convert_branch_to_tag('ModelBuilding', 'model-building')
+#    convert_branch_to_tag('OpenSim30', 'OpenSim-3.0')
+#    convert_branch_to_tag('OpenSim31', 'OpenSim-3.1')
+#    convert_branch_to_tag('OpenSimWW01', 'OpenSim-WW')
+#    delete_branch('svn/OpenSim30GUI')
+#    delete_branch('svn/Remove_Xerces')
 
 # Garbage collect.
 # ----------------
