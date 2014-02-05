@@ -1,0 +1,26 @@
+-GitHub
+-Install Git
+-Configure your computer
+
+-Clone a repository
+-Change a file, stage it, commit it.
+
+-Create a new file, add it, commit it.
+
+Changing a file, and commiting those changes
+You've changed A.txt and want to commit your changes
+----------------------------------------------------
+git add A.txt
+git commit -m"Fix bug in A.txt."
+
+
+
+-Fork a repository
+-Add a remote
+-
+
+-Merge branches
+
+
+-Rebase.
+
