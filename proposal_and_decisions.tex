@@ -1,0 +1,56 @@
+\documentclass[pdf, 8pt]{beamer}
+
+\def\NUMDECISIONS{10}
+
+\mode<presentation>{}
+
+\title{OpenSim2Git}
+
+\subtitle{progress, proposed conversion, remaining tasks}
+
+\author{Chris Dembia, Justin Si}
+
+\date{\today}
+
+\begin{document}
+
+\begin{frame}[fragile]{What's been done}
+
+\begin{itemize}
+\item Created git repository (github.com/chrisdembia/opensim2git) containing
+    python scripts.
+\item authors.txt (e.g., \verb|nallana = Nabeel Allana <nallana@uwaterloo.ca>|)
+\item Fork/patch of svn2git Ruby tool (same as what Sherm used for Simbody).
+\item Run svn2git for CFSQP (to live at github.com/opensim-org/opensim-cfsqp).
+\item Run svn2git for opensim-core (to live at opensim-org/opensim-core).
+\item Save output of svn2git to a log file.
+\item Decide which files to exclude from Git opensim-core history.
+\item Normalize line endings to \verb|\n| (instead of mix of \verb|\r\n| and
+\verb|\n|).
+\item Delete most SVN branches, keep some as Git tags.
+\item Once Git repositories are created, edit their content:
+    \begin{itemize}
+    \item CFSQP: Edit CMakeLists.txt so it's an independent project.
+    \item OpenSim: Clean up CMakeLists.txt for removed directories (Gui, Installer,
+    Vendors/CFSQP, ...).
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{opensim-core}
+TODO 
+\end{frame}
+
+\begin{frame}{TODO/\NUMDECISIONS: Models, and OutputReference}
+TODO
+\end{frame}
+
+\begin{frame}{TODO/\NUMDECISIONS: Using CFSQP in OpenSim}{How does cfsqp interact with
+opensim-core?}
+
+\end{frame}
+
+\end{document}
+
+
+
