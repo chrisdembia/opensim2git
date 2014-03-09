@@ -1,6 +1,9 @@
 \documentclass[pdf, 8pt]{beamer}
-
-\def\NUMDECISIONS{10}
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{multicol}
 
 \mode<presentation>{}
 
@@ -11,6 +14,18 @@
 \author{Chris Dembia, Justin Si}
 
 \date{\today}
+
+% Macros, etc.
+\fvset{commandchars=\\\{\}}
+
+\def\NUMDECISIONS{10}
+\def\GUICOLOUR{black}
+\def\CORECOLOR{green!60!black}
+\def\IDKCOLOUR{orange}
+\def\CFSQPCOLR{black}
+\def\DELETE{red}
+\def\PRESERVE{green!60!black}
+\def\TOTAG{blue}
 
 \begin{document}
 
@@ -37,16 +52,229 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{opensim-core}
-TODO 
+\begin{frame}[fragile]{opensim-core}{The current paths that end up in
+    opensim-core}
+\begin{Verbatim}
+\textcolor{\CORECOLOR}{Applications/}
+\textcolor{\GUICOLOUR}{Gui/}
+\textcolor{\GUICOLOUR}{Installer/}
+\textcolor{\IDKCOLOUR}{Models/}
+\textcolor{\CORECOLOR}{OpenSim/}
+Vendors/\textcolor{\CFSQPCOLR}{CFSQP/}
+       /\textcolor{\CORECOLOR}{lepton/}
+       /\textcolor{\GUICOLOUR}{vtk_dll/}
+\textcolor{\CORECOLOR}{ApiDoxygen.cmake}
+\textcolor{\CORECOLOR}{CMakeLists.txt}
+\textcolor{\CORECOLOR}{Copyright.txt}
+\textcolor{\CORECOLOR}{CTestConfig.cmake}
+\textcolor{\CORECOLOR}{Doxyfile.in}
+\textcolor{\CORECOLOR}{FindSimbody.cmake}
+\textcolor{\CORECOLOR}{NOTICE}
+\textcolor{\GUICOLOUR}{NSIS.InstallOptions.ini.in}
+\textcolor{\GUICOLOUR}{NSIS.template.in}
+\textcolor{\CORECOLOR}{OpenSimAPI.html}
+\textcolor{\CORECOLOR}{ReadMe.txt}
+\textcolor{\GUICOLOUR}{WriteEnvStr.nsh}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}{TODO/\NUMDECISIONS: Starting at r6665}
 \end{frame}
 
 \begin{frame}{TODO/\NUMDECISIONS: Models, and OutputReference}
+Keeping all models:
+Removing output reference:
 TODO
 \end{frame}
 
-\begin{frame}{TODO/\NUMDECISIONS: Using CFSQP in OpenSim}{How does cfsqp interact with
-opensim-core?}
+\begin{frame}[fragile]{TODO/\NUMDECISIONS: Excluding files/directories from the
+history (files existing after r6665).}
+
+TODO Excluding these brings the repository from X TO Z. (X TO Z including
+working copy).
+\begin{Verbatim}
+OpenSim/doc/html
+API/doc/html
+OpenSim/Java/src
+OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.*
+OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.*
+Documentation/OpenSim_Splash.psd
+Documentation/OpenSim_Splash_2_2_1.psd
+OpenSim/Wrapping/Python/pyOpenSim_wrap.cxx
+OpenSim/Wrapping/Python/pyOpenSim_wrap.h
+OpenSim/Wrapping/Python/pyOpenSim.py
+OpenSim/Utilities/importOldModels/SimTKlapack.dll
+OpenSim/Utilities/importOldModels/xerces-c_2_7.dll
+Vendors/xerces-c_2_8_0
+\end{Verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{TODO/\NUMDECISIONS: Excluding OutputReference from the history}
+
+\begin{Verbatim}
+Models/Arm26/OutputReference
+Models/Leg39/OutputReference
+Models/Gait10dof18musc/OutputReference
+Models/Gait2354_Simbody/OutputReference
+Models/Gait2392_Simbody/OutputReference
+Models/Leg6Dof9Musc/Stance/Reference
+OpenSim/Examples/ControllerExample/OutputReference/*.sto
+OpenSim/Examples/ControllerExample/OutputReference/*.mot
+OpenSim/Examples/ControllerExample/OutputReference/*.osim
+OpenSim/Examples/CustomActuatorExample/OutputReference/*.sto
+OpenSim/Examples/CustomActuatorExample/OutputReference/*.mot
+OpenSim/Examples/CustomActuatorExample/OutputReference/*.osim
+OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.sto
+OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.mot
+OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.osim
+OpenSim/Examples/ExampleMain/OutputReference/*.sto
+OpenSim/Examples/ExampleMain/OutputReference/*.mot
+OpenSim/Examples/ExampleMain/OutputReference/*.osim
+\end{Verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{TODO/\NUMDECISIONS: Excluding files that only existed
+before r6665}
+
+\begin{Verbatim}
+Vendors/xerces-c-src_2_7_0
+Vendors/xerces-c-src_2_4_0
+Vendors/xerces-c-src2_4_0
+OpenSim/Examples/Gait2354_Simbody/OutputReference
+OpenSim/Examples/Gait2392_Simbody/OutputReference
+Documentation
+Vendors/lib
+Vendors/core
+Vendors/SimTK
+OpenSim/Examples/Gait/OutputReference
+OpenSim/Examples/Leg39/OutputReference
+OpenSim/Examples/Gait2354/OutputReference
+Specs
+
+TODO
+Tags/Release_02_00_Jamboree
+Tags/OpenSim_BuiltOn_SimTK_1_1
+NMBLTK
+\end{Verbatim}
+
+\end{frame}
+
+\begin{frame}{Branches: SVN branches vs Git branches}
+
+Similarities
+\begin{itemize}
+    \item In both SVN and Git, branches and tags are different names for the
+    same mechanism, and the terms distinguish their roles.
+\end{itemize}
+
+TODO
+
+
+\end{frame}
+
+\begin{frame}[fragile]{SVN Branches: what happens to them in Git?}
+
+\textcolor{\PRESERVE}{This SVN branch will be a \textbf{branch} in Git.}
+
+\textcolor{\TOTAG}{This SVN branch will be a \textbf{tag} in Git.}
+
+\textcolor{\DELETE}{This SVN branch will not appear anywhere in Git.}
+
+\hrule
+\begin{multicols}{2}
+\begin{Verbatim}
+\textcolor{\DELETE}{1728Branch}
+\textcolor{\PRESERVE}{CableWrapping}
+\textcolor{\DELETE}{Engines}
+\textcolor{\DELETE}{Integrator}
+\textcolor{\DELETE}{Integrator@1105}
+\textcolor{\DELETE}{JasonEmel485Project}
+\textcolor{\DELETE}{JasonEmel485Project@1683}
+\textcolor{\DELETE}{JasonEmel485Project@1741}
+\textcolor{\DELETE}{JasonEmel485Project@1755}
+\textcolor{\DELETE}{JasonEmel485Project@4133}
+\textcolor{\DELETE}{OpenSim}
+\textcolor{\DELETE}{OpenSim15}
+\textcolor{\DELETE}{OpenSim18}
+\textcolor{\DELETE}{OpenSim19}
+\textcolor{\DELETE}{OpenSim20}
+\textcolor{\DELETE}{OpenSim21}
+\textcolor{\DELETE}{OpenSim22}
+\textcolor{\DELETE}{OpenSim23}
+\textcolor{\DELETE}{OpenSim23_1}
+\textcolor{\DELETE}{OpenSim23_1_NB7}
+\textcolor{\TOTAG}{OpenSim24}
+\textcolor{\TOTAG}{OpenSim30}
+\textcolor{\DELETE}{OpenSim30GUI}
+\textcolor{\TOTAG}{OpenSim31}
+\textcolor{\TOTAG}{OpenSim32}
+\textcolor{\DELETE}{OpenSimGUIProto}
+\textcolor{\DELETE}{OpenSimWW01}
+\textcolor{\DELETE}{OpenSim_BuiltOn_SimTK_1_1}
+\textcolor{\DELETE}{OpenSim_BuiltOn_SimTK_1_1@1683}
+\textcolor{\DELETE}{OpenSim_BuiltOn_SimTK_1_1@1741}
+\textcolor{\DELETE}{OpenSim_BuiltOn_SimTK_1_1@1755}
+\textcolor{\DELETE}{OpenSim_BuiltOn_SimTK_1_1@4056}
+\textcolor{\DELETE}{OpenSim_exhibit}
+\textcolor{\DELETE}{Remove_Xerces}
+\textcolor{\DELETE}{Restructure}
+\textcolor{\DELETE}{UseSimTKLibs}
+\textcolor{\PRESERVE}{Trunk} (master branch)
+\textcolor{\DELETE}{migrate2NmbltkBr}
+\end{Verbatim}
+\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{SVN Tags: what happens to them in Git?}
+
+\textcolor{\PRESERVE}{This SVN tag will be a tag in Git.}
+
+\textcolor{\DELETE}{This SVN tag will not appear anywhere in Git.}
+
+\hrule
+
+\begin{multicols}{2}
+\begin{Verbatim}
+\textcolor{\DELETE}{Before_Directory_Restructure_2007-03-16}
+\textcolor{\DELETE}{NMBLTK}
+\textcolor{\DELETE}{NMBLTK@1095}
+\textcolor{\DELETE}{Release0.1}
+\textcolor{\DELETE}{Release0.1@1096}
+\textcolor{\DELETE}{Release_00_00}
+\textcolor{\DELETE}{Release_00_06_00}
+\textcolor{\DELETE}{Release_00_07_08}
+\textcolor{\DELETE}{Release_00_08_02}
+\textcolor{\DELETE}{Release_01_00_00}
+\textcolor{\DELETE}{Release_01_01_00}
+\textcolor{\DELETE}{Release_01_05_05}
+\textcolor{\DELETE}{Release_01_06_Jamboree}
+\textcolor{\DELETE}{Release_01_07_00}
+\textcolor{\DELETE}{Release_02_00}
+\textcolor{\DELETE}{Release_02_00_01}
+\textcolor{\DELETE}{Release_02_00_02}
+\textcolor{\DELETE}{Release_02_00_Jamboree}
+\textcolor{\DELETE}{Release_02_02_00}
+\textcolor{\DELETE}{Release_02_02_01}
+\textcolor{\DELETE}{Release_02_03_02}
+\textcolor{\PRESERVE}{Release_02_04_00} (v2.4, or OpenSim-2.4)
+\textcolor{\PRESERVE}{Release_03_00_00} (v3.0, or OpenSim-3.0)
+\textcolor{\DELETE}{Release_03_00_Dev} TODO
+\textcolor{\PRESERVE}{Release_03_01_00} (v3.1, or OpenSim-3.1)
+\textcolor{\PRESERVE}{Release_03_02_00} (v3.2, or OpenSim-3.2)
+\end{Verbatim}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{SVN Branches / tags after r6665}
+TODO
+\end{frame}
+
+\begin{frame}{TODO/\NUMDECISIONS: Using CFSQP in OpenSim}{How does cfsqp
+    interact with opensim-core?}
+TODO
+\end{frame}
 
 \begin{frame}{TODO/\NUMDECISIONS: When do we switch?}
 
@@ -61,6 +289,18 @@ opensim-core?}
 \end{itemize}
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}{TODO/\NUMDECISIONS: Remaining tasks}
+\begin{itemize}
+\item Merge history.
+\item Teach Git to team.
+    \begin{itemize}
+        \item Sherm has collected a list of resources.
+        \item Nabeel showed me a really neat and brief command-line tutorial.
+        \item Most people will probably use TortoiseGit.
+    \end{itemize}
+\end{itemize}
 \end{frame}
 
 \end{document}
