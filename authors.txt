@@ -50,3 +50,4 @@ nmbldev = NMBL Dev <unknown>
 pvehrhart = Unknown <unknown>
 shimm = Unknown <unknown>
 nallana = Nabeel Allana <nallana@uwaterloo.ca>
+jimmy = James Dunne <dunne.jimmy@gmail.com>
