@@ -11,6 +11,11 @@ if 'OPENSIMTOGIT_LOCAL_DIR' in os.environ:
 else:
     local_dir = os.path.expanduser('~/opensim2git_local')
 
+if 'SVN_REPOSITORY_PATH' in os.environ:
+    svn_repo_path = os.environ['SVN_REPOSITORY_PATH']
+else:
+    svn_repo_path = 'https://simtk.org/svn/opensim'
+
 def myprint(string):
     print("\n[opensim2git] %s" % string)
 

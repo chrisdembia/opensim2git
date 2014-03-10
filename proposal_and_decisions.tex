@@ -119,18 +119,10 @@ Models/Gait10dof18musc/OutputReference
 Models/Gait2354_Simbody/OutputReference
 Models/Gait2392_Simbody/OutputReference
 Models/Leg6Dof9Musc/Stance/Reference
-OpenSim/Examples/ControllerExample/OutputReference/*.sto
-OpenSim/Examples/ControllerExample/OutputReference/*.mot
-OpenSim/Examples/ControllerExample/OutputReference/*.osim
-OpenSim/Examples/CustomActuatorExample/OutputReference/*.sto
-OpenSim/Examples/CustomActuatorExample/OutputReference/*.mot
-OpenSim/Examples/CustomActuatorExample/OutputReference/*.osim
-OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.sto
-OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.mot
-OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.osim
-OpenSim/Examples/ExampleMain/OutputReference/*.sto
-OpenSim/Examples/ExampleMain/OutputReference/*.mot
-OpenSim/Examples/ExampleMain/OutputReference/*.osim
+OpenSim/Examples/ControllerExample/OutputReference/(*.sto|*.mot|*.osim)
+OpenSim/Examples/CustomActuatorExample/OutputReference/(*.sto|*.mot|*.osim)
+OpenSim/Examples/OptimizationExample_Arm26/OutputReference/(*.sto|*.mot|*.osim)
+OpenSim/Examples/ExampleMain/OutputReference/(*.sto|*.mot|*.osim)
 \end{Verbatim}
 
 \end{frame}
@@ -195,6 +187,7 @@ TODO
 \textcolor{\DELETE}{JasonEmel485Project@1741}
 \textcolor{\DELETE}{JasonEmel485Project@1755}
 \textcolor{\DELETE}{JasonEmel485Project@4133}
+\textcolor{\PRESERVE}{ModelBuilding} TODO
 \textcolor{\DELETE}{OpenSim}
 \textcolor{\DELETE}{OpenSim15}
 \textcolor{\DELETE}{OpenSim18}
@@ -291,7 +284,38 @@ TODO
 
 \end{frame}
 
-\begin{frame}{TODO/\NUMDECISIONS: Remaining tasks}
+\begin{frame}{TODO/\NUMDECISIONS: Name of the repository: opensim-core?}
+The repository contains:
+\begin{itemize}
+    \item C++ API
+    \item Java wrapping
+    \item Python wrapping
+    \item models
+    \item command-line applications
+    \item C++ API documentation
+\end{itemize}
+
+Other options: opensim, opensim-api.
+\end{frame}
+
+\begin{frame}[fragile]
+    \begin{tabular}{l|l|l|l|l|p{2cm}}
+      &  Models & OutputReference & r6665 & .git size & .git + working
+      copy size \\ \hline
+      0 & included & included & before \& after & TODO & TODO \\
+      1 & included & included & only after & 240 MB & 918 MB \\
+      2 & not included & not included & before \& after & TODO & TODO \\
+      3 & not included & not included & only after & TODO & TODO \\
+      4 & included & not included & before \& after & TODO & TODO \\
+      5 & included & not included & only after & 86 MB & 252 MB \\
+    \end{tabular}
+
+    \vspace{2cm}
+    (The .git folder is similar to .svn folders, except there is only one, in
+    the root directory)
+\end{frame}
+
+\begin{frame}{Remaining tasks}
 \begin{itemize}
 \item Merge history.
 \item Teach Git to team.
@@ -300,6 +324,7 @@ TODO
         \item Nabeel showed me a really neat and brief command-line tutorial.
         \item Most people will probably use TortoiseGit.
     \end{itemize}
+\item Fix bug in my fork of svn2git (for ignoring root paths like NMBLTK).
 \end{itemize}
 \end{frame}
 

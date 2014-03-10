@@ -48,3 +48,6 @@ windows?
  -clean up documentation of what opensim2git does, how to get it to run
  -continue removing files from the history to make the repository smaller.
  -make sure line endings are actually fixed.
+ - PATTERN ".svn" EXCLUDE can be removed
+
+ http://stackoverflow.com/questions/5385148/get-cmake-to-execute-a-target-in-project-before-building-a-library
