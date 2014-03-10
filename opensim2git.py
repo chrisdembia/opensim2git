@@ -218,6 +218,8 @@ if not only_cfsqp:
                 "--ignore 'Tags/Release_02_00_Jamboree' "
                 "--ignore 'Tags/OpenSim_BuiltOn_SimTK_1_1' "
                 "--ignore 'NMBLTK' "
+                # What if we exclude all models?
+                "--exclude 'Models' "
                 "--revision 6665 "
                 "--metadata " % (svn_repo_path, homebase_dir, username),
                 stdout=out,

@@ -82,9 +82,14 @@ Vendors/\textcolor{\CFSQPCOLR}{CFSQP/}
 \end{frame}
 
 \begin{frame}{TODO/\NUMDECISIONS: Models, and OutputReference}
-Keeping all models:
-Removing output reference:
-TODO
+    Options:
+    \begin{itemize}
+            \item As-is (Models in opensim-core).
+            \item Keep Models in opensim-core, but put OutputReference
+                elsewhere.
+            \item Do not keep Models in opensim-core.
+    \end{itemize}
+    Would people ever want the API, etc. without models?
 \end{frame}
 
 \begin{frame}[fragile]{TODO/\NUMDECISIONS: Excluding files/directories from the
@@ -305,7 +310,7 @@ Other options: opensim, opensim-api.
       0 & included & included & before \& after & TODO & TODO \\
       1 & included & included & only after & 240 MB & 918 MB \\
       2 & not included & not included & before \& after & TODO & TODO \\
-      3 & not included & not included & only after & TODO & TODO \\
+      3 & not included & not included & only after & 81 MB & 215 MB \\
       4 & included & not included & before \& after & TODO & TODO \\
       5 & included & not included & only after & 86 MB & 252 MB \\
     \end{tabular}
