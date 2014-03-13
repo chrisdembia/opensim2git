@@ -1,0 +1,44 @@
+We are planning to eventually move most of the OpenSim source code repository to Git, at github.com/opensim-org. Only the GUI will remain in SVN (at simtk.org). Today at the Dev meeting, we discussed the progress of this conversion, and made a bunch of decisions about how it will happen. The slides for the discussion are attached. Below are notes from the discussion.
+
+Decision 1: Should the Git repository include all the history, or only the history since SVN r6665 (the repository was restructured around then)?
+
+Only the history since SVN r6665. The reason to do this is to minimize the size of the repository. Nabeel suggested creating a second git repository that contains all the history. We can keep this in GitHub as well, so people can use it to look back at the full history.
+
+Decision 2: Should we leave the Models folder in the repository? It takes up a lot of space.
+
+No. Create a separate repository for Models. Test cases do not depend on Models. We can include this repository in the main repository using a git submodule. Git submodules DO add some complexity, but the decision of whether or not we create a submodule is not so critical. We can add or remove the submodule later on. The important decision is if we create separate repositories or not, as we can only create the repositories once.
+
+Decision 3: Which files are okay to remove from the history when moving to Git?
+
+The group was fine with the files I chose to remove from the history. We got into some discussion about what to do with wrapping. People had selective memory about what we had previously decided, according to their preferences (e.g., Ajay remembered that we would separate out wrapping =p).  For now, wrapping lives with the main git repository, and the products of wrapping are installed with the installation of "opensim-core". Then, Ayman can pick up the wrapping products, copy them over to the SVN repository, and commit them to SVN at will. We can redecide what to do about wrapping at a later point. Nabeel thinks we should use separate repositories for wrappping. Not surprising, since he and Ajay are such good friends. Nabeel, can you share your thoughts with me?
+
+Decision 4: What should we do with SVN branches in Git?
+
+See the slides for the advised decision. We are going along with what's in the slides, except we are deleting CableWrapping and ModelBuilding. Keep svn tags as git tags, not the svn branches as git tags.
+
+Decision 5: Using CFSQP in OpenSim?
+
+People agreed with what's on the corresponding slide.
+
+Decision 6: When do we switch?
+
+When Ajay is ready (when he feels Trunk is stable).
+
+Decision 7: Name of the repository: opensim-core?
+
+Ajay: "core" is kinda harsh to the GUI, GUI is part of OpenSim.
+Sherm: "core" means the inner part, an irreducible set. Also, opensim-core is overloaded (with this mailing list)
+Ayman: "Thank you for letting me be here!"
+Someone: sdk suggests binaries, not source code. We also already have 
+James: "I like opensim-sdk."
+
+(Sorry if I did not include your input here.)
+
+We can keep brainstorming, but for now it looks like we're going with opensim-sdk. We can change the name later (but not after we make the repository public).
+
+~~
+Other points:
+
+A. James asked why even go to git, and we swiftly convinced him about the benefits.
+
+B. We will start working on a presentation, etc. to teach Git to the team. We would do a workshop about Git just before the conversion. In the workshop, we can let people play around with Simbody. There is general interest by people in developing these materials.
