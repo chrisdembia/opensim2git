@@ -12,7 +12,7 @@ start_time = time.time()
 
 # For debugging and development:
 only_cfsqp = False
-normalize_line_endings = False
+normalize_line_endings = True
 use_opensim_core_svn_version_branches_as_git_tags = False
 opensim_core_tag_prefix = 'OpenSim-'
 
@@ -182,24 +182,24 @@ if not only_cfsqp:
                 "--exclude 'OpenSim/Utilities/importOldModels/xerces-c_2_7.dll' "
                 "--exclude 'Vendors/xerces-c_2_8_0' "
                 "--exclude 'Vendors/vtk_dll' "
-                "--exclude 'Models/Arm26/OutputReference' "
-                "--exclude 'Models/Leg39/OutputReference' "
-                "--exclude 'Models/Gait10dof18musc/OutputReference' "
-                "--exclude 'Models/Gait2354_Simbody/OutputReference' "
-                "--exclude 'Models/Gait2392_Simbody/OutputReference' "
-                "--exclude 'Models/Leg6Dof9Musc/Stance/Reference' "
-                "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.sto' "
-                "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.mot' "
-                "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.osim' "
-                "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.sto' "
-                "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.mot' "
-                "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.osim' "
-                "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.sto' "
-                "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.mot' "
-                "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.osim' "
-                "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.sto' "
-                "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.mot' "
-                "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.osim' "
+                #"--exclude 'Models/Arm26/OutputReference' "
+                #"--exclude 'Models/Leg39/OutputReference' "
+                #"--exclude 'Models/Gait10dof18musc/OutputReference' "
+                #"--exclude 'Models/Gait2354_Simbody/OutputReference' "
+                #"--exclude 'Models/Gait2392_Simbody/OutputReference' "
+                #"--exclude 'Models/Leg6Dof9Musc/Stance/Reference' "
+                #"--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.sto' "
+                #"--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.mot' "
+                #"--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.osim' "
+                #"--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.sto' "
+                #"--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.mot' "
+                #"--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.osim' "
+                #"--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.sto' "
+                #"--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.mot' "
+                #"--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.osim' "
+                #"--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.sto' "
+                #"--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.mot' "
+                #"--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.osim' "
                 # Above exclude's are for r6665 and after.
                 # Below exclude's are for r6664 and earlier.
                 "--exclude 'Documentation' "
@@ -210,17 +210,15 @@ if not only_cfsqp:
                 "--exclude 'Vendors/core' "
                 "--exclude 'Vendors/SimTK' "
                 "--exclude 'Specs' "
-                "--exclude 'OpenSim/Examples/Gait2354_Simbody/OutputReference' "
-                "--exclude 'OpenSim/Examples/Gait2392_Simbody/OutputReference' "
-                "--exclude 'OpenSim/Examples/Gait/OutputReference' "
-                "--exclude 'OpenSim/Examples/Leg39/OutputReference' "
-                "--exclude 'OpenSim/Examples/Gait2354/OutputReference' "
+                #"--exclude 'OpenSim/Examples/Gait2354_Simbody/OutputReference' "
+                #"--exclude 'OpenSim/Examples/Gait2392_Simbody/OutputReference' "
+                #"--exclude 'OpenSim/Examples/Gait/OutputReference' "
+                #"--exclude 'OpenSim/Examples/Leg39/OutputReference' "
+                #"--exclude 'OpenSim/Examples/Gait2354/OutputReference' "
                 "--ignore 'Tags/Release_02_00_Jamboree' "
                 "--ignore 'Tags/OpenSim_BuiltOn_SimTK_1_1' "
-                "--ignore 'NMBLTK' "
-                # What if we exclude all models?
-                "--exclude 'Models' "
-                "--revision 6665 "
+                #"--ignore 'Trunk/NMBLTK' "
+                #"--revision 6665 "
                 "--metadata " % (svn_repo_path, homebase_dir, username),
                 stdout=out,
                 stderr=err)
@@ -286,7 +284,6 @@ with cd(opensim_core_dir):
     else:
         delete_branch('OpenSim30')
         delete_branch('OpenSim31')
-        delete_branch('OpenSim32')
         #rename_tag('Release_02_04_00', '%s2.4' % opensim_core_tag_prefix)
         rename_tag('Release_03_00_00', '%s3.0' % opensim_core_tag_prefix)
         rename_tag('Release_03_01_00', '%s3.1' % opensim_core_tag_prefix)
@@ -380,3 +377,5 @@ if not only_cfsqp:
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time
 myprint("Took %.1f minutes." % (elapsed_time / 60.0))
+
+# TODO 6665 or 6666?

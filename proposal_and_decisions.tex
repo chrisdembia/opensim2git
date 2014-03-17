@@ -9,7 +9,7 @@
 
 \title{OpenSim2Git}
 
-\subtitle{progress, proposed conversion, remaining tasks}
+\subtitle{progress, decisions to make, remaining tasks}
 
 \author{Chris Dembia, Justin Si}
 
@@ -18,7 +18,7 @@
 % Macros, etc.
 \fvset{commandchars=\\\{\}}
 
-\def\NUMDECISIONS{10}
+\def\NUMDECISIONS{7}
 \def\GUICOLOUR{black}
 \def\CORECOLOR{green!60!black}
 \def\IDKCOLOUR{orange}
@@ -28,6 +28,11 @@
 \def\TOTAG{blue}
 
 \begin{document}
+
+\begin{frame}
+\maketitle
+
+\end{frame}
 
 \begin{frame}[fragile]{What's been done}
 
@@ -47,13 +52,16 @@
     \begin{itemize}
     \item CFSQP: Edit CMakeLists.txt so it's an independent project.
     \item OpenSim: Clean up CMakeLists.txt for removed directories (Gui, Installer,
-    Vendors/CFSQP, ...).
+    Vendors/CFSQP, Java wrapping installation).
     \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{opensim-core}{The current paths that end up in
     opensim-core}
+
+    \textbf{opensim-core will be the green directories.}
+
 \begin{Verbatim}
 \textcolor{\CORECOLOR}{Applications/}
 \textcolor{\GUICOLOUR}{Gui/}
@@ -78,10 +86,48 @@ Vendors/\textcolor{\CFSQPCOLR}{CFSQP/}
 \end{Verbatim}
 \end{frame}
 
-\begin{frame}{TODO/\NUMDECISIONS: Starting at r6665}
+\begin{frame}
+    About \NUMDECISIONS~ decisions to make.
 \end{frame}
 
-\begin{frame}{TODO/\NUMDECISIONS: Models, and OutputReference}
+\begin{frame}[fragile]{1/\NUMDECISIONS: Starting at r6665}
+
+    \textbf{r6663 commit message}
+
+    \begin{Verbatim}
+    Phase 1: Rearrange repository such that:
+    1. Examples are moved up to Models top level directory
+    2. Applications are moved up to top level directory
+    3. Gui is moved to its own top level directory
+    4. Prebuilt simtk libraries have been removed from Vendors directory
+    5. CMakeLists.txt files have been updated to correspond to new layout
+\end{Verbatim}
+
+    \textbf{r6665 commit message}
+
+\begin{Verbatim}
+    More restructuring of repository in particular:
+    remove top level API folder
+    move API/doc folder to OpenSim/doc 
+    move API/examples/plugin to OpenSim/Plugin
+    Adjust Makefiles to copy Simbody libraries to build directory
+    Add swig output files now under OpenSim/Java/src
+    Fix install locations to correspond to latest repository layout.
+    All test cases pass and installation maintains same layout (except for
+    Plugin now under APIExamples)
+\end{Verbatim}
+
+
+    \begin{itemize}
+            \item svn2git bug: cannot bring over the following old SVN tags:
+                \begin{Verbatim}
+                    Tags/Release_02_00_Jamboree
+                    Tags/OpenSim_BuiltOn_SimTK_1_1
+                \end{Verbatim}
+        \end{itemize}
+\end{frame}
+
+\begin{frame}{2/\NUMDECISIONS: Models, and OutputReference}
     Options:
     \begin{itemize}
             \item As-is (Models in opensim-core).
@@ -92,30 +138,36 @@ Vendors/\textcolor{\CFSQPCOLR}{CFSQP/}
     Would people ever want the API, etc. without models?
 \end{frame}
 
-\begin{frame}[fragile]{TODO/\NUMDECISIONS: Excluding files/directories from the
+\begin{frame}[fragile]{3/\NUMDECISIONS: Excluding files/directories from the
 history (files existing after r6665).}
 
-TODO Excluding these brings the repository from X TO Z. (X TO Z including
-working copy).
 \begin{Verbatim}
+.*CFSQP.*
+Gui
+OpenSim/Applications/Gui
+Installer
+NSIS.InstallOptions.ini.in
+NSIS.template.in
+WriteEnvStr.nsh
 OpenSim/doc/html
 API/doc/html
+Documentation/OpenSim_Splash.psd
+Documentation/OpenSim_Splash_2_2_1.psd
 OpenSim/Java/src
 OpenSim/Java/OpenSimJNI/OpenSimJNI_wrap.*
 OpenSim/Wrapping/Java/OpenSimJNI/OpenSimJNI_wrap.*
-Documentation/OpenSim_Splash.psd
-Documentation/OpenSim_Splash_2_2_1.psd
 OpenSim/Wrapping/Python/pyOpenSim_wrap.cxx
 OpenSim/Wrapping/Python/pyOpenSim_wrap.h
 OpenSim/Wrapping/Python/pyOpenSim.py
 OpenSim/Utilities/importOldModels/SimTKlapack.dll
 OpenSim/Utilities/importOldModels/xerces-c_2_7.dll
 Vendors/xerces-c_2_8_0
+Vendors/vtk_dll
 \end{Verbatim}
 
 \end{frame}
 
-\begin{frame}[fragile]{TODO/\NUMDECISIONS: Excluding OutputReference from the history}
+\begin{frame}[fragile]{3/\NUMDECISIONS: Excluding OutputReference from the history}
 
 \begin{Verbatim}
 Models/Arm26/OutputReference
@@ -132,46 +184,59 @@ OpenSim/Examples/ExampleMain/OutputReference/(*.sto|*.mot|*.osim)
 
 \end{frame}
 
-\begin{frame}[fragile]{TODO/\NUMDECISIONS: Excluding files that only existed
+\begin{frame}[fragile]{3/\NUMDECISIONS: Excluding files that only existed
 before r6665}
 
 \begin{Verbatim}
+Documentation
 Vendors/xerces-c-src_2_7_0
 Vendors/xerces-c-src_2_4_0
 Vendors/xerces-c-src2_4_0
-OpenSim/Examples/Gait2354_Simbody/OutputReference
-OpenSim/Examples/Gait2392_Simbody/OutputReference
-Documentation
 Vendors/lib
 Vendors/core
 Vendors/SimTK
+Specs
+OpenSim/Examples/Gait2354_Simbody/OutputReference
+OpenSim/Examples/Gait2392_Simbody/OutputReference
 OpenSim/Examples/Gait/OutputReference
 OpenSim/Examples/Leg39/OutputReference
 OpenSim/Examples/Gait2354/OutputReference
-Specs
+(NMBLTK)
 
-TODO
 Tags/Release_02_00_Jamboree
 Tags/OpenSim_BuiltOn_SimTK_1_1
-NMBLTK
 \end{Verbatim}
 
+Could continue to find big (mostly binary) files to remove from history.
+
 \end{frame}
 
-\begin{frame}{Branches: SVN branches vs Git branches}
+\begin{frame}{4/\NUMDECISIONS: Branches: SVN branches vs Git branches}
 
-Similarities
+    SVN stores diffs, Git stores snapshots of the working copy, and refers
+    to ``revisions'' using hashes.
+
 \begin{itemize}
     \item In both SVN and Git, branches and tags are different names for the
-    same mechanism, and the terms distinguish their roles.
+        same mechanism, and the terms distinguish their roles.
+    %\item In SVN, a branch is literally a copy of the repository, in a
+    %    different place in the repository. Each revision contains each branch.
+    \item In SVN, history is linear.
+    \item Git history is a tree. Branches just point to a ``revision'' anywhere
+        in that tree.
+     %   branches are different branches in the history tree. Can only
+     %   view one at a time. Very lightweight. Branches are just pointers or
+     %   labels into the history tree.
+    \item In Git, branches are ephemeral, and tags are permanent, not changed,
+        for releases.
 \end{itemize}
 
-TODO
-
+The take-away: all SVN branches should be deleted in Git except for ones that
+are actively worked on. All releases should be Git tags.
 
 \end{frame}
 
-\begin{frame}[fragile]{SVN Branches: what happens to them in Git?}
+\begin{frame}[fragile]{4/\NUMDECISIONS: SVN Branches: what happens to them in Git?}
 
 \textcolor{\PRESERVE}{This SVN branch will be a \textbf{branch} in Git.}
 
@@ -225,7 +290,7 @@ TODO
 \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{SVN Tags: what happens to them in Git?}
+\begin{frame}[fragile]{4/\NUMDECISIONS: SVN Tags: what happens to them in Git?}
 
 \textcolor{\PRESERVE}{This SVN tag will be a tag in Git.}
 
@@ -265,16 +330,50 @@ TODO
 \end{multicols}
 \end{frame}
 
-\begin{frame}{SVN Branches / tags after r6665}
-TODO
+\begin{frame}[fragile]{4/\NUMDECISIONS: SVN Branches \& tags after r6665}
+    If we only keep history after r6665, we only need to deal with
+    the following branches/tags (selected from previous 2 slides):
+
+    \vspace{1cm}
+Branches:
+
+\begin{Verbatim}
+\textcolor{\PRESERVE}{CableWrapping}
+\textcolor{\PRESERVE}{ModelBuilding} TODO
+\textcolor{\TOTAG}{OpenSim30}
+\textcolor{\DELETE}{OpenSimWW01}
+\textcolor{\DELETE}{OpenSim30GUI}
+\textcolor{\TOTAG}{OpenSim31}
+\textcolor{\TOTAG}{OpenSim32}
+\textcolor{\DELETE}{Remove_Xerces}
+\end{Verbatim}
+
+Tags:
+
+\begin{Verbatim}
+\textcolor{\PRESERVE}{Release_02_04_00} (v2.4, or OpenSim-2.4)
+\textcolor{\PRESERVE}{Release_03_00_00} (v3.0, or OpenSim-3.0)
+\textcolor{\DELETE}{Release_03_00_Dev} TODO
+\textcolor{\PRESERVE}{Release_03_01_00} (v3.1, or OpenSim-3.1)
+\textcolor{\PRESERVE}{Release_03_02_00} (v3.2, or OpenSim-3.2)
+\end{Verbatim}
+
 \end{frame}
 
-\begin{frame}{TODO/\NUMDECISIONS: Using CFSQP in OpenSim}{How does cfsqp
+\begin{frame}[fragile]{5/\NUMDECISIONS: Using CFSQP in OpenSim}{How does cfsqp
     interact with opensim-core?}
-TODO
+    \begin{itemize}
+        \item OpenSim doesn't know about CFSQP, if we give CFSQP, they
+            build it on their own and install it into the OpenSim/bin
+            folder?
+        \item Does OpenSim need to know about CFSQP in some way?
+        \item We could create a CMake target in opensim-cfsqp
+            \verb|install_to_opensim|, and a CMake variable that is
+            \verb|$OPENSIM_HOME| that the target uses.
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{TODO/\NUMDECISIONS: When do we switch?}
+\begin{frame}{6/\NUMDECISIONS: When do we switch?}
 
 \begin{itemize}
 \item Over a weekend.
@@ -285,11 +384,13 @@ TODO
 \item DARPA Challenge deadlines.
 \item Ajay's sweeping changes to Trunk.
 \end{itemize}
+\item Convert before we start the Challenge.
+\item Should teach Git to team before The Conversion.
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}{TODO/\NUMDECISIONS: Name of the repository: opensim-core?}
+\begin{frame}{7/\NUMDECISIONS: Name of the repository: opensim-core?}
 The repository contains:
 \begin{itemize}
     \item C++ API
@@ -303,33 +404,57 @@ The repository contains:
 Other options: opensim, opensim-api.
 \end{frame}
 
-\begin{frame}[fragile]
-    \begin{tabular}{l|l|l|l|l|p{2cm}}
-      &  Models & OutputReference & r6665 & .git size & .git + working
-      copy size \\ \hline
-      0 & included & included & before \& after & TODO & TODO \\
-      1 & included & included & only after & 240 MB & 918 MB \\
-      2 & not included & not included & before \& after & TODO & TODO \\
-      3 & not included & not included & only after & 81 MB & 215 MB \\
-      4 & included & not included & before \& after & TODO & TODO \\
-      5 & included & not included & only after & 86 MB & 252 MB \\
-    \end{tabular}
+\begin{frame}[fragile]{Repository size (opensim-core) depending on decisions we make}
+\begin{tabular}{lll}
+    decisions & .git & .git + working copy \\ \hline
+    The biggest repository possible & 1.2 GB &1.9 GB \\
+    All revisions, without OutputRef. & 406 MB & 415 MB (error\ldots) \\
+    r6665 and after, with complete Models folder & 240 MB & 918 MB \\
+    r6665 and after, without OutputRef. & 86 MB & 252 MB \\
+    r6665 and after, without Models folder & 81 MB & 215 MB \\
+\end{tabular}
 
-    \vspace{2cm}
+    %\begin{tabular}{l|l|l|l|l|l|p{2cm}}
+    %  &  NMBLTK & Models & OutputRef. & r6665 & .git size & .git + working
+    %  copy size \\ \hline
+    %  1 & yes & yes & yes & before \& after & TODO & TODO \\
+    %  2 & yes & yes & no & before \& after & 406 MB & 415 MB \\
+    %  3 & yes & no & no & before \& after & TODO & TODO \\
+    %  4 & N/A & yes & yes & only after & 240 MB & 918 MB \\
+    %  5 & N/A & yes & no & only after & 86 MB & 252 MB \\
+    %  6 & N/A & no & no & only after & 81 MB & 215 MB \\
+    %\end{tabular}
+      %3 & no & yes & no & before \& after & TODO & TODO \\
+
+    \vspace{1cm}
+    \vspace{1cm}
+
     (The .git folder is similar to .svn folders, except there is only one, in
-    the root directory)
+    the root directory. It's where the history lives (all but working copy).)
 \end{frame}
 
 \begin{frame}{Remaining tasks}
 \begin{itemize}
-\item Merge history.
+\item Merge history (EDIT: NON-ISSUE NOW).
+    \begin{itemize}
+            \item svn2git detects branch points, but not when a branch is
+                merged back into another branch.
+            \item Prevents branches from getting deleted (garbage
+                collected).
+            \item Helps when looking through the history.
+    \end{itemize}
 \item Teach Git to team.
     \begin{itemize}
         \item Sherm has collected a list of resources.
         \item Nabeel showed me a really neat and brief command-line tutorial.
         \item Most people will probably use TortoiseGit.
+        \item (1) Basics of git, (2) How git works (internals).
     \end{itemize}
-\item Fix bug in my fork of svn2git (for ignoring root paths like NMBLTK).
+\item Continue finding large binary files to exclude from history.
+\item Create git patches to prepare necessary post-conversion changes to CMake,
+    etc.
+\item Work with Ayman to set up the GUI to pick up the separate OpenSim
+    installation properly.
 \end{itemize}
 \end{frame}
 
