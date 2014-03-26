@@ -14,7 +14,7 @@ start_time = time.time()
 only_cfsqp = False
 normalize_line_endings = True
 use_opensim_core_svn_version_branches_as_git_tags = False
-opensim_core_tag_prefix = 'OpenSim-'
+opensim_core_tag_prefix = 'v'
 
 git_repos_dir = os.path.join(local_dir, 'ruby_git_repos')
 
@@ -45,10 +45,13 @@ os.makedirs(git_repos_dir)
 
 if not only_cfsqp:
     opensim_core_dir = os.path.join(git_repos_dir, 'opensim-core')
+    opensim_complete_history_dir = os.path.join(git_repos_dir,
+            'opensim-complete-history')
 cfsqp_dir = os.path.join(git_repos_dir, 'cfsqp')
 
 if not only_cfsqp:
     os.makedirs(opensim_core_dir)
+    os.makedirs(opensim_complete_history_dir)
 os.makedirs(cfsqp_dir)
 
 # svn mirror.
@@ -182,24 +185,24 @@ if not only_cfsqp:
                 "--exclude 'OpenSim/Utilities/importOldModels/xerces-c_2_7.dll' "
                 "--exclude 'Vendors/xerces-c_2_8_0' "
                 "--exclude 'Vendors/vtk_dll' "
-                #"--exclude 'Models/Arm26/OutputReference' "
-                #"--exclude 'Models/Leg39/OutputReference' "
-                #"--exclude 'Models/Gait10dof18musc/OutputReference' "
-                #"--exclude 'Models/Gait2354_Simbody/OutputReference' "
-                #"--exclude 'Models/Gait2392_Simbody/OutputReference' "
-                #"--exclude 'Models/Leg6Dof9Musc/Stance/Reference' "
-                #"--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.sto' "
-                #"--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.mot' "
-                #"--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.osim' "
-                #"--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.sto' "
-                #"--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.mot' "
-                #"--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.osim' "
-                #"--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.sto' "
-                #"--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.mot' "
-                #"--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.osim' "
-                #"--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.sto' "
-                #"--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.mot' "
-                #"--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.osim' "
+                "--exclude 'Models/Arm26/OutputReference' "
+                "--exclude 'Models/Leg39/OutputReference' "
+                "--exclude 'Models/Gait10dof18musc/OutputReference' "
+                "--exclude 'Models/Gait2354_Simbody/OutputReference' "
+                "--exclude 'Models/Gait2392_Simbody/OutputReference' "
+                "--exclude 'Models/Leg6Dof9Musc/Stance/Reference' "
+                "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.sto' "
+                "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.mot' "
+                "--exclude 'OpenSim/Examples/ControllerExample/OutputReference/*.osim' "
+                "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.sto' "
+                "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.mot' "
+                "--exclude 'OpenSim/Examples/CustomActuatorExample/OutputReference/*.osim' "
+                "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.sto' "
+                "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.mot' "
+                "--exclude 'OpenSim/Examples/OptimizationExample_Arm26/OutputReference/*.osim' "
+                "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.sto' "
+                "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.mot' "
+                "--exclude 'OpenSim/Examples/ExampleMain/OutputReference/*.osim' "
                 # Above exclude's are for r6665 and after.
                 # Below exclude's are for r6664 and earlier.
                 "--exclude 'Documentation' "
@@ -210,11 +213,11 @@ if not only_cfsqp:
                 "--exclude 'Vendors/core' "
                 "--exclude 'Vendors/SimTK' "
                 "--exclude 'Specs' "
-                #"--exclude 'OpenSim/Examples/Gait2354_Simbody/OutputReference' "
-                #"--exclude 'OpenSim/Examples/Gait2392_Simbody/OutputReference' "
-                #"--exclude 'OpenSim/Examples/Gait/OutputReference' "
-                #"--exclude 'OpenSim/Examples/Leg39/OutputReference' "
-                #"--exclude 'OpenSim/Examples/Gait2354/OutputReference' "
+                "--exclude 'OpenSim/Examples/Gait2354_Simbody/OutputReference' "
+                "--exclude 'OpenSim/Examples/Gait2392_Simbody/OutputReference' "
+                "--exclude 'OpenSim/Examples/Gait/OutputReference' "
+                "--exclude 'OpenSim/Examples/Leg39/OutputReference' "
+                "--exclude 'OpenSim/Examples/Gait2354/OutputReference' "
                 "--ignore 'Tags/Release_02_00_Jamboree' "
                 "--ignore 'Tags/OpenSim_BuiltOn_SimTK_1_1' "
                 #"--ignore 'Trunk/NMBLTK' "
@@ -229,6 +232,37 @@ if not only_cfsqp:
         call('echo "opensim-core: %s" '
                 '> %s/.git/description' % (
                     opensim_core_description, opensim_core_dir))
+
+# opensim-complete-history
+if not only_cfsqp:
+    myprint('Running svn2git for opensim-complete-history.')
+    with cd(opensim_complete_history_dir):
+    
+        # Run svn2git.
+        myprint(password_message % opensim_complete_history_dir)
+    
+        # Write output to log files.
+        out = open('%s/svn2git_progress_log.txt' % opensim_complete_history_dir, 'w')
+        err = open('%s/svn2git_error_log.txt' % opensim_complete_history_dir, 'w')
+    
+        call("svn2git %s "
+                "--trunk Trunk "
+                "--tags Tags "
+                "--branches Branches "
+                "--authors %s/authors.txt "
+                "--verbose "
+                "--username %s "
+                "--metadata " % (svn_repo_path, homebase_dir, username),
+                stdout=out,
+                stderr=err)
+        out.close()
+        err.close()
+    
+        # Edit 'description' file, which is used by GitWeb (run `$ git instaweb`).
+        call('echo "opensim_complete_history: %s" '
+                '> %s/.git/description' % (
+                    opensim_complete_history_description,
+                    opensim_complete_history_dir))
 
 # Clean up OpenSim branches.
 # --------------------------
@@ -292,7 +326,8 @@ with cd(opensim_core_dir):
     delete_branch('OpenSimWW01')
     delete_branch('OpenSim30GUI')
     delete_branch('Remove_Xerces')
-
+    delete_branch('ModelBuilding')
+    delete_branch('CableWrapping')
     delete_tag('Release_03_00_Dev')
 
 # Normalize line endings.
@@ -336,6 +371,7 @@ if normalize_line_endings:
     filter_branch_tasks(cfsqp_dir)
     if not only_cfsqp:
         filter_branch_tasks(opensim_core_dir)
+        filter_branch_tasks(opensim_complete_history_dir)
 
 # Garbage collect.
 # ----------------
@@ -353,6 +389,7 @@ def git_garbage_collection(repo_path):
 git_garbage_collection(cfsqp_dir)
 if not only_cfsqp:
     git_garbage_collection(opensim_core_dir)
+    git_garbage_collection(opensim_complete_history_dir)
 
 # Make CFSQP a standalone project.
 # --------------------------------
@@ -373,6 +410,7 @@ def repository_size(repo_path):
 repository_size(cfsqp_dir)
 if not only_cfsqp:
     repository_size(opensim_core_dir)
+    repository_size(opensim_complete_history_dir)
 
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time
