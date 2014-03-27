@@ -38,6 +38,8 @@ Performing the conversion
 
     * OPENSIMTOGIT_LOCAL_DIR: We'll write the new git repositories to this
       location on your disk. Default: ~/opensim2git_local
+    * OPENSIMTOGIT_SIMTK_USERNAME: simtk.org username, to access the SVN
+    * OpenSim repository.
     * OPENSIMTOGIT_GITHUB_USERNAME: We will create and push the new
       repositories to this account.
 
