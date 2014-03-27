@@ -100,7 +100,7 @@ def filter_branch_tasks(repo_path):
         # http://stackoverflow.com/questions/1510798/trying-to-fix-line-endings-with-git-filter-branch-but-having-no-luck/1511273#1511273
         call('echo "* text=auto" >> .gitattributes')
         call('git add .gitattributes')
-        call('git commit -m "Introduce end-of-line normalization."')
+        call('git commit -am "Introduce end-of-line normalization."')
 
 # Garbage collect.
 # ----------------

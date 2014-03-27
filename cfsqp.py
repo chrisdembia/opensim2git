@@ -47,9 +47,8 @@ git_garbage_collection(cfsqp_dir)
 # Make CFSQP a standalone project.
 # --------------------------------
 with cd(cfsqp_dir):
-    call('cp %s/CMakeLists_cfsqp_standalone.txt CMakeLists.txt' % homebase_dir)
-    call('git add CMakeLists.txt')
-    call('git commit -m"Edit CMake files to make this project standalone."')
+    call('git apply %s/cfsqp_standalone.patch' % homebase_dir)
+    call('git commit -am"Edit CMake files to make this project standalone."')
 
 repository_size(cfsqp_dir)
 
