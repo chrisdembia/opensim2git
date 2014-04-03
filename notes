@@ -1,3 +1,12 @@
+20140328:
+
+* subtree split models off of opensim-core
+* figure out how to get opensim_core without genfiles issue
+* squash commits in opensim-core using rebase
+* patch opensim-core
+* remove big files from history (run those magical commands again)
+
+
 1. make a mirror of svn
 2. kde svn2git - remove GUI and CFSQP
 3. 

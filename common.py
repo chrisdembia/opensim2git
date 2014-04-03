@@ -4,6 +4,12 @@ import shutil
 import subprocess
 import sys
 
+if len(sys.argv) >= 2 and sys.argv[1] == '--auton':
+    auto_delete = True
+else:
+    auto_delete = False
+
+
 # Where are we right now? This SHOULD be the location of the opensim2git git
 # repository.
 homebase_dir = os.getcwd()
@@ -52,13 +58,17 @@ class cd(object):
         os.chdir(self.orig_path)
 
 def prompt_delete_dir(my_dir):
+    myprint('Deleting pre-existing %s. ' % my_dir)
     # To prevent weird overwriting from occurring, remove the previous work.
     if os.path.exists(my_dir):
-        input = raw_input('Deleting pre-existing %s. Okay? (y/n) ' % my_dir)
-        if input[0] == 'y':
+        if auto_delete:
             shutil.rmtree(my_dir)
         else:
-            sys.exit('Aborting. Will not overwrite pre-existing work.')
+            input = raw_input('Okay? (y/n) ')
+            if input[0] == 'y':
+                shutil.rmtree(my_dir)
+            else:
+                sys.exit('Aborting. Will not overwrite pre-existing work.')
 
 # Normalize line endings.
 # -----------------------

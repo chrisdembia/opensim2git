@@ -23,7 +23,7 @@ with cd(cfsqp_dir):
     err = open('%s/svn2git_error_log.txt' % cfsqp_dir, 'w')
 
     # TODO subprocess.call may be causing the threading issues.
-    call("svn2git %s "
+    call("svn2git file://%s "
             "--trunk Trunk/Vendors/CFSQP "
             "--authors %s/authors.txt "
             "--verbose "
@@ -31,7 +31,7 @@ with cd(cfsqp_dir):
             "--nobranches " # TODO YES branches once svn2git is fixed.
             "--notags "
             "--revision 1053 "
-            "--metadata " % (svn_repo_path, homebase_dir, username),
+            "--metadata " % (svn_mirror_dir, homebase_dir, username),
             stdout=out,
             stderr=err)
     out.close()
