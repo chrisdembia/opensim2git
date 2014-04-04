@@ -137,9 +137,9 @@ with cd(opensim_core_dir):
     delete_branch('OpenSim30')
     delete_branch('OpenSim31')
     #rename_tag('Release_02_04_00', '%s2.4' % opensim_core_tag_prefix)
-    rename_tag('Release_03_00_00', '%s3.0' % opensim_core_tag_prefix)
-    rename_tag('Release_03_01_00', '%s3.1' % opensim_core_tag_prefix)
-    rename_tag('Release_03_02_00', '%s3.2' % opensim_core_tag_prefix)
+    rename_tag('Release_03_00_00', '%s3.0.0' % opensim_core_tag_prefix)
+    rename_tag('Release_03_01_00', '%s3.1.0' % opensim_core_tag_prefix)
+    rename_tag('Release_03_02_00', '%s3.2.0' % opensim_core_tag_prefix)
 
     delete_branch('OpenSimWW01')
     delete_branch('OpenSim30GUI')
