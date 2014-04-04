@@ -9,7 +9,7 @@ from common import *
 start_time = time.time()
 
 # For debugging and development:
-normalize_line_endings = False
+normalize_line_endings = True
 opensim_core_tag_prefix = 'v'
 
 opensim_core_dir = os.path.join(git_repos_dir, 'opensim-core')
