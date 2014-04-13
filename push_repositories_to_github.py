@@ -24,9 +24,11 @@ else:
 
 # Put the repositories on GitHub.
 # -------------------------------
-def push_to_github(local_relpath, github_name, description, private):
+def push_to_github(local_relpath, description, private):
     # For background, see `man curl` and
     # http://developer.github.com/v3/repos/.
+
+    github_name = local_relpath
 
     # Delete the repository on GitHub, in case it already exists.
     call("curl -u {0} -X DELETE "
@@ -50,7 +52,8 @@ def push_to_github(local_relpath, github_name, description, private):
         call('git push {0} --all'.format(github_username))
         call('git push {0} --tags'.format(github_username))
 
-push_to_github('cfsqp', 'cfsqp', cfsqp_description,
-        'true')
-push_to_github('opensim-core', 'opensim-core',
-        opensim_core_description, 'false')
+push_to_github('cfsqp', cfsqp_description, 'true')
+push_to_github('opensim-core', opensim_core_description, 'false')
+push_to_github('opensim-complete-history',
+        opensim_complete_history_description, 'true')
+push_to_github('opensim-models', opensim_models_description, 'false')
