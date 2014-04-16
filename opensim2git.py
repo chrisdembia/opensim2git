@@ -28,11 +28,11 @@ if os.path.exists(git_repos_dir):
 os.makedirs(git_repos_dir)
 
 opensim_core_dir = os.path.join(git_repos_dir, 'opensim-core')
-opensim_complete_history_dir = os.path.join(git_repos_dir,
-        'opensim-complete-history')
+opensim_legacy_dir = os.path.join(git_repos_dir,
+        'opensim-legacy')
 
 os.makedirs(opensim_core_dir)
-os.makedirs(opensim_complete_history_dir)
+os.makedirs(opensim_legacy_dir)
 
 
 # Create git repositories.
@@ -143,17 +143,17 @@ with cd(opensim_core_dir):
             '> %s/.git/description' % (
                 opensim_core_description, opensim_core_dir))
 
-# opensim-complete-history
+# opensim-legacy
 # ========================
-myprint('Running svn2git for opensim-complete-history.')
-with cd(opensim_complete_history_dir):
+myprint('Running svn2git for opensim-legacy.')
+with cd(opensim_legacy_dir):
 
     # Run svn2git.
-    myprint(password_message % opensim_complete_history_dir)
+    myprint(password_message % opensim_legacy_dir)
 
     # Write output to log files.
-    out = open('%s/svn2git_progress_log.txt' % opensim_complete_history_dir, 'w')
-    err = open('%s/svn2git_error_log.txt' % opensim_complete_history_dir, 'w')
+    out = open('%s/svn2git_progress_log.txt' % opensim_legacy_dir, 'w')
+    err = open('%s/svn2git_error_log.txt' % opensim_legacy_dir, 'w')
 
     call("svn2git %s "
             "--trunk Trunk "
@@ -169,10 +169,10 @@ with cd(opensim_complete_history_dir):
     err.close()
 
     # Edit 'description' file, which is used by GitWeb (run `$ git instaweb`).
-    call('echo "opensim_complete_history: %s" '
+    call('echo "opensim_legacy: %s" '
             '> %s/.git/description' % (
-                opensim_complete_history_description,
-                opensim_complete_history_dir))
+                opensim_legacy_description,
+                opensim_legacy_dir))
 
 # Clean up OpenSim branches.
 # --------------------------
@@ -230,15 +230,15 @@ with cd(opensim_core_dir):
 if normalize_line_endings:
     if not only_cfsqp:
         filter_branch_tasks(opensim_core_dir)
-        filter_branch_tasks(opensim_complete_history_dir)
+        filter_branch_tasks(opensim_legacy_dir)
 
 if not only_cfsqp:
     git_garbage_collection(opensim_core_dir)
-    git_garbage_collection(opensim_complete_history_dir)
+    git_garbage_collection(opensim_legacy_dir)
 
 
 repository_size(opensim_core_dir)
-repository_size(opensim_complete_history_dir)
+repository_size(opensim_legacy_dir)
 
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time

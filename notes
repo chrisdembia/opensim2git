@@ -2,14 +2,14 @@
 
 -use The BFG to remove large files or otherwise prune the history.
 -opensim-models has some large files currently.
--opensim-complete-history is too large?
+-opensim-legacy is too large?
 
 
 20140408:
 
 -clean up opensim2git; put in opensim-org
 -'standalone' must be committed to all extant branches at time of conversion
--opensim complete history: public or not?
+-opensim legacy: public or not?
 -opensimcore: put in readme that the history is broken (at which revision
 also):
     automate this.

@@ -3,6 +3,10 @@ from os.path import join
 import shutil
 import subprocess
 import sys
+import datetime
+
+date = datetime.date.today()
+datestr = date.strftime('%Y %B %d')
 
 if len(sys.argv) >= 2 and sys.argv[1] == '--auton':
     auto_delete = True
@@ -43,9 +47,10 @@ opensim_core_description = ('SimTK OpenSim C++ libraries/applications and '
             'Java/Python wrapping.')
 opensim_models_description = ('SimTK OpenSim models (.osim) and related example '
         'files that are distributed with OpenSim.')
-opensim_complete_history_description = ('Complete history of the '
-        "OpenSim project. This repository is not for development; it is "
-        "only for reference.")
+opensim_legacy_description = ('Complete history of the '
+        "OpenSim project up through %s . This repository is not for "
+        "development; it is "
+        "only for reference." % datestr)
 
 # To work in a different directory.
 class cd(object):
