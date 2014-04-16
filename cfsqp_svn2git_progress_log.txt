@@ -1,0 +1,106 @@
+Running command: git svn init --prefix=svn/ --username=chrisdembia --trunk=Trunk/Vendors/CFSQP file:///home/fitze/opensim2git_local/svn_mirror
+Initialized empty Git repository in /home/fitze/opensim2git_local/ruby_git_repos/cfsqp/.git/
+Running command: git config --local svn.authorsfile /home/fitze/Documents/opensim2git/opensim2git/authors.txt
+Running command: git svn fetch -r 1053:HEAD 
+branch_from: /Vendors => /Vendors/CFSQP
+Found possible branch point: file:///home/fitze/opensim2git_local/svn_mirror/Vendors/CFSQP => file:///home/fitze/opensim2git_local/svn_mirror/Trunk/Vendors/CFSQP, 1052
+Initializing parent: refs/remotes/svn/trunk@1052
+	A	qld.c
+	A	suCFSQPDLL.cpp
+	A	suCFSQPDLL.h
+	A	copyright
+	A	makefile
+	A	version2.5d
+	A	sampl1.c
+	A	sampl2a.c
+	A	sampl3.c
+	A	sampl4.c
+	A	samplePerfOnly.cpp
+	A	sampl2b.c
+	A	sampl5.c
+	A	sampl1CC.cpp
+	A	suCFSQP/suCFSQP.vcproj
+	A	suCFSQP/suCFSQP.dsp
+	A	cfsqpusr.h
+	A	cfsqp.c
+	A	readme
+r1053 = 49b25ee5de4308cb81ccd0b24c93fa9bad2e7e71 (refs/remotes/svn/trunk)
+	M	suCFSQP/suCFSQP.vcproj
+r1093 = ff0455a45ab08fd39e27cc4f4e404e1b470e0fec (refs/remotes/svn/trunk)
+	A	CMakeLists.txt
+r1255 = fc0a41b27fdb54c41a89ef8be73dc9f1c222b7d5 (refs/remotes/svn/trunk)
+r1274 = 0cd7c55f2e0fabad30ce17bd8e85a78cf58dc4dc (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1331 = ebf7f9dce1f1d407c022551e836e1b8dcb5e9e99 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1335 = 258f7db2580a4f9c6cb340021468d3851f1d0c61 (refs/remotes/svn/trunk)
+	M	suCFSQPDLL.cpp
+	M	suCFSQPDLL.h
+r1361 = 6de8229a80c624318c65ef574ca27869831d9e97 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1533 = d58bdb5ffd2f70a9fd04639022a603631dc4e142 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1536 = 4598302f520c8151ceaa8a467f731f858e154d2c (refs/remotes/svn/trunk)
+	A	About.cpp
+	M	CMakeLists.txt
+r1562 = 7d0c008e47d8431f9ade6fe98535339632ed9459 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1594 = 60b12349e86c21c3296bc5308fcee0cafed53141 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1763 = 8db7446c962105443c69c27b452bf0094279d1f0 (refs/remotes/svn/trunk)
+	M	About.cpp
+r1822 = 7fc0bea9d529cf02a5fb8850df5ccbb42e60c270 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1849 = 54fcc624c24c89a54a5e9347a043849b4eb4a81d (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r1951 = 33576ce2674869f3f7ba7eb769156949ce3c9639 (refs/remotes/svn/trunk)
+	M	suCFSQPDLL.cpp
+r1952 = e64dfb6a437c448934bb819a76b4a0a10cda40f5 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r2052 = 8fa33f4104e90b420df8cdf8a7b9fd9d75c7d5e8 (refs/remotes/svn/trunk)
+	M	suCFSQPDLL.h
+r2736 = e460800d3dae447c82a2d8595a9b35d603e3f807 (refs/remotes/svn/trunk)
+	D	makefile
+	D	suCFSQP/suCFSQP.dsp
+	D	suCFSQP/suCFSQP.vcproj
+	D	suCFSQP/
+	D	suCFSQPDLL.cpp
+	D	suCFSQPDLL.h
+	M	CMakeLists.txt
+	A	osimCFSQPDLL.cpp
+	A	osimCFSQPDLL.h
+	M	About.cpp
+	M	cfsqpusr.h
+	M	cfsqp.c
+W: -empty_dir: Trunk/Vendors/CFSQP/makefile
+W: -empty_dir: Trunk/Vendors/CFSQP/suCFSQP
+W: -empty_dir: Trunk/Vendors/CFSQP/suCFSQPDLL.cpp
+W: -empty_dir: Trunk/Vendors/CFSQP/suCFSQPDLL.h
+r2843 = 9b0b4cf00387e7ff479bff4c5a600dbd07748647 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r3011 = 22aafea02deecc2bdf5ef0486b03e2a9f04b0881 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r3069 = 965f2ef7e60edb158a1d1f9eabf4118bd4b60a5c (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r5545 = 7e88edc8170dc053edf21003a53a337b716c3ca2 (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r5974 = 5155e95e16c1384ed09d96b428aa77fa5805006e (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r6031 = 1d2d79422770c0b7dab55d39f6311891db261326 (refs/remotes/svn/trunk)
+	M	About.cpp
+r6800 = eced89a978698d06847bc7c144eee2b278286182 (refs/remotes/svn/trunk)
+	M	qld.c
+r6805 = 540f575bebfa5f8f30388ff3c2efbcbd8fa1c14c (refs/remotes/svn/trunk)
+	M	CMakeLists.txt
+r7371 = 1cd0163bae8fbb97a0707ae454cfd7b4d38270d6 (refs/remotes/svn/trunk)
+Checked out HEAD:
+  file:///home/fitze/opensim2git_local/svn_mirror/Trunk/Vendors/CFSQP r7371
+Running command: git branch -l --no-color
+* master
+Running command: git branch -r --no-color
+  svn/trunk
+Running command: git config --local --get user.name
+Running command: git config --local --get user.email
+Running command: git checkout -f master
+Already on 'master'
+Running command: git gc

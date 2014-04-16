@@ -1,0 +1,43 @@
+remote: warning: File Gui/Documentation/OpenSim_Splash.psd is 65.68 MB; this is
+larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Gui/Documentation/OpenSim_Splash_2_2_1.psd is 65.66 MB;
+this is larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File
+Models/Gait2354_Simbody/OutputReference/ResultsForward/subject01_walk1_states.sto
+is 68.43 MB; this is larger than GitHub's recommended maximum file size of 50
+MB
+remote: warning: File
+Models/Gait2354_Simbody/OutputReference/ResultsForward/subject01_walk1_states_degrees.mot
+is 68.43 MB; this is larger than GitHub's recommended maximum file size of 50
+MB
+remote: warning: File Documentation/Figures/CoverArt/OpenSim_Layers.psd is
+65.05 MB; this is larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Documentation/OpenSim_Splash_2_2_1.psd is 65.79 MB; this
+is larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKmath_static_d.lib is
+53.92 MB; this is larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKsimbody_static_d.lib
+is 50.86 MB; this is larger than GitHub's recommended maximum file size of 50
+MB
+remote: warning: File Documentation/OpenSim User Guide/OpenSim_UsersGuide.doc
+is 52.92 MB; this is larger than GitHub's recommended maximum file size of 50
+MB
+remote: warning: File Documentation/OpenSim_Splash.psd is 65.77 MB; this is
+larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKmath_static_d.lib is
+60.48 MB; this is larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/Win32/VC8/OpenSim_SimTKsimbody_static_d.lib
+is 50.49 MB; this is larger than GitHub's recommended maximum file size of 50
+MB
+remote: warning: File Documentation/OpenSim_Splash.psd is 65.81 MB; this is
+larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/OpenSim_SimTKmath_static_d.lib is 60.48 MB;
+this is larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/OpenSim_SimTKsimbody_static_d.lib is 50.46
+MB; this is larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Documentation/OpenSim_Splash.psd is 65.68 MB; this is
+larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/SimTKmath_static_d.lib is 60.47 MB; this is
+larger than GitHub's recommended maximum file size of 50 MB
+remote: warning: File Vendors/lib/SimTKsimbody_static_d.lib is 50.49 MB; this
+is larger than GitHub's recommended maximum file size of 50 MB
