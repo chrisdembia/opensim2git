@@ -1,0 +1,40 @@
+From fadd1d671695083abdc0a2ce0884e52515771a89 Mon Sep 17 00:00:00 2001
+From: Christopher Dembia <cld72@cornell.edu>
+Date: Tue, 15 Apr 2014 21:36:16 -0700
+Subject: [PATCH] Edit CMake to make this new project standalone.
+
+---
+ Arm26/CMakeLists.txt | 6 +++---
+ CMakeLists.txt       | 4 ++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/Arm26/CMakeLists.txt b/Arm26/CMakeLists.txt
+index ebef29e..b5e31ce 100644
+--- a/Arm26/CMakeLists.txt
++++ b/Arm26/CMakeLists.txt
+@@ -8,7 +8,7 @@ INSTALL_FILES(/Models/Arm26/ FILES ${ARM26_FILES})
+ #INSTALL(DIRECTORY bones DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
+ INSTALL(DIRECTORY ComputedMuscleControl DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
+ INSTALL(DIRECTORY InverseKinematics DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
+-INSTALL(DIRECTORY InverseDynamics DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
+-INSTALL(DIRECTORY ForwardDynamics DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
+-INSTALL(DIRECTORY StaticOptimization DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
++#INSTALL(DIRECTORY InverseDynamics DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
++#INSTALL(DIRECTORY ForwardDynamics DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
++#INSTALL(DIRECTORY StaticOptimization DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
+ INSTALL(DIRECTORY OutputReference DESTINATION Models/Arm26/ PATTERN ".svn" EXCLUDE)
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a4b2300..277f0d4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,3 +1,7 @@
++PROJECT(OpenSimModels)
++
++cmake_minimum_required(VERSION 2.6)
++
+ SUBDIRS(Gait2354_Simbody Gait2392_Simbody WristModel Arm26 Leg6Dof9Musc Tug_of_War BouncingBlock ToyDropLanding Gait10dof18musc)
+ 
+ FILE(GLOB VTP_FILES "Geometry/*.vtp")
+-- 
+1.8.3.2
+
