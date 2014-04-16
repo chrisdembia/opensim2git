@@ -32,6 +32,7 @@ def myprint(string):
     print("\n[opensim2git] %s" % string)
 
 def call(command, *args, **kwargs):
+    print('Running: %s' % command)
     subprocess.call(command, *args, shell=True, **kwargs)
 
 # Descriptions of the repositories we'll create. We need this more than once.
@@ -43,7 +44,7 @@ opensim_core_description = ('SimTK OpenSim C++ libraries/applications and '
 opensim_models_description = ('SimTK OpenSim models (.osim) and related example '
         'files that are distributed with OpenSim.')
 opensim_complete_history_description = ('Complete history of the '
-        "OpenSim project. This repository is not for development; it's "
+        "OpenSim project. This repository is not for development; it is "
         "only for reference.")
 
 # To work in a different directory.

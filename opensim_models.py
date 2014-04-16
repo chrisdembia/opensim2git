@@ -32,6 +32,10 @@ with cd(opensim_models_dir):
 
 call('rm -rf %s' % opensim_complete_history_tempcopy_dir)
 
+with cd(opensim_models_dir):
+    call('git apply %s/opensim-models.patch' % homebase_dir)
+    call('git commit -am"Edit CMake files to reflect split from SVN."')
+
 repository_size(opensim_models_dir)
 
 # Tell the user how long opensim2git ran for.

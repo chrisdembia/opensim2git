@@ -153,6 +153,20 @@ if normalize_line_endings:
 
 git_garbage_collection(opensim_core_dir)
 
+# Make opensim-core a standalone project with a reasonably clean install.
+with cd(opensim_core_dir):
+
+    call('git apply %s/opensim-core.patch' % homebase_dir)
+    call('git commit -am"Edit CMake files to reflect split from SVN."')
+
+    call('git checkout OpenSim32')
+    call('git apply %s/opensim-core.patch' % homebase_dir)
+    call('git commit -am"Edit CMake files to reflect split from SVN."')
+    call('git checkout Visualizer')
+    call('git apply %s/opensim-core.patch' % homebase_dir)
+    call('git commit -am"Edit CMake files to reflect split from SVN."')
+    call('git checkout master')
+
 repository_size(opensim_core_dir)
 
 # Tell the user how long opensim2git ran for.

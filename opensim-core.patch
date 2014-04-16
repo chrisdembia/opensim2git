@@ -1,125 +1,7 @@
-From f6930dfbc7d8cf5bf845e2dca79f27b67b4b73bf Mon Sep 17 00:00:00 2001
-From: Christopher Dembia <cld72@cornell.edu>
-Date: Mon, 7 Apr 2014 09:46:37 -0700
-Subject: [PATCH 1/2] Clear CMake of Gui, CFSQP, Models, installer.
-
----
- CMakeLists.txt         | 54 +++-----------------------------------------------
- Vendors/CMakeLists.txt | 10 +---------
- 2 files changed, 4 insertions(+), 60 deletions(-)
-
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4f0c17c..fde4b85 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -409,13 +409,6 @@ ENDFOREACH()
- INSTALL(DIRECTORY ${Simbody_INCLUDE_DIR} DESTINATION sdk/include/SimTK 
- 			PATTERN ".svn" EXCLUDE)
- 			
--SET(OPENSIM_INSTALL_PACKAGE_BUILD OFF CACHE BOOL "Build an installer (to post on simtk.org)")
--MARK_AS_ADVANCED(OPENSIM_INSTALL_PACKAGE_BUILD)
--IF(OPENSIM_INSTALL_PACKAGE_BUILD)
--IF(WIN32)
--	SET(VTK_LIB_DIR ${OpenSim_SOURCE_DIR}/Vendors/vtk_dll/${PLATFORM_ABI}/ CACHE PATH "Prebuilt VTK-shared libraries")	
--ENDIF(WIN32)
--ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
- 
- IF(NOT LIBRARY_OUTPUT_PATH)
-   SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/${VCVERSION} CACHE INTERNAL "Single output directory for building all libraries.")
-@@ -497,18 +490,6 @@ INSTALL(PROGRAMS ${THIRDPARTY_BIN_FILES}
- INSTALL(FILES ${THIRDPARTY_LIB_FILES}    DESTINATION lib)
- INSTALL(FILES ${THIRDPARTY_SDKLIB_FILES} DESTINATION sdk/lib)
- 
--## These INSTALL commands should go into proper subdirectories
--IF(WIN32)
--	IF(OPENSIM_INSTALL_PACKAGE_BUILD)
--		# Install windows runtime libraries to support prebuilt libraries
--        # and redistributable
--		INSTALL_FILES(/bin/ FILES 
--			${OpenSim_SOURCE_DIR}/Vendors/vtk_dll/msvcr71.dll
--		    ${OpenSim_SOURCE_DIR}/Vendors/vtk_dll/msvcp71.dll)
--		
--	ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
--ENDIF(WIN32)
--
- 
- ## The following are required to uses Dart and the Cdash dashboard per Jesse
- ENABLE_TESTING()
-@@ -549,47 +530,18 @@ FILE(APPEND  ${VERSION_FILE_PATH} "Platform=${Platform}-${PLATFORM_ABI}")
- FILE(APPEND  ${VERSION_FILE_PATH} "\n")
- INSTALL(FILES ${VERSION_FILE_PATH} DESTINATION sdk)
- 
--IF(OPENSIM_INSTALL_PACKAGE_BUILD)
--IF(WIN32 AND NOT UNIX)
--   # There is a bug in NSI that does not handle full unix paths properly. Make
--   # sure there is at least one set of four (4) backlasshes.
--   SET(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}\\\\Installer\\\\OpenSimInstallerIcon.bmp")
--   # SET(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\OpenSim.exe")
--   SET(CPACK_NSIS_DISPLAY_NAME  "${CPACK_PACKAGE_INSTALL_DIRECTORY} ")
--   SET(CPACK_CREATE_DESKTOP_LINKS "${CPACK_PACKAGE_INSTALL_DIRECTORY}\\\\bin\\\\OpenSim.exe")
--   SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.simtk.org/home/opensim")
--   SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.simtk.org/home/opensim")
--   SET(CPACK_NSIS_CONTACT "aymanh@simtk.org")
--   SET(CPACK_NSIS_MODIFY_PATH ON)
--   SET (CPACK_NSIS_EXTRA_INSTALL_COMMANDS
--     "ExecWait '\\\"$INSTDIR\\\\bin\\\\vcredist_x86.exe\\\"'"
--   )
--ELSE(WIN32 AND NOT UNIX)
--   SET(CPACK_STRIP_FILES "bin/OpenSim")
--   SET(CPACK_SOURCE_STRIP_FILES "")
--ENDIF(WIN32 AND NOT UNIX)
--SET(CPACK_PACKAGE_EXECUTABLES "OpenSim" "OpenSim")
--
--INCLUDE (CPack)
--
--ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
--
- #
- # Build the documentation
- #
- 
- #-----------------------------------------------------------------------------
--SET(BUILD_API_ONLY OFF CACHE BOOL "Build API only (headers and libs, no GUI or Applications")
-+SET(BUILD_API_ONLY OFF CACHE BOOL "Build/install only headers, libraries,
-+    wrapping, tests; not applications (ik, rra, etc.).")
- MARK_AS_ADVANCED( BUILD_API_ONLY )
- 
- IF(BUILD_API_ONLY)
- 	SUBDIRS(Vendors OpenSim)
--	SET(OPENSIM_INSTALL_PACKAGE_BUILD OFF)
- ELSE(BUILD_API_ONLY)
--IF(OPENSIM_INSTALL_PACKAGE_BUILD)
--	SUBDIRS(Vendors OpenSim Applications Models Gui)
--ELSE(OPENSIM_INSTALL_PACKAGE_BUILD)
--	SUBDIRS(Vendors OpenSim Applications Models)
--ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
-+	SUBDIRS(Vendors OpenSim Applications)
- ENDIF(BUILD_API_ONLY)
- 
-diff --git a/Vendors/CMakeLists.txt b/Vendors/CMakeLists.txt
-index 64d9ab8..7dd474c 100644
---- a/Vendors/CMakeLists.txt
-+++ b/Vendors/CMakeLists.txt
-@@ -1,10 +1,2 @@
- #-----------------------------------------------------------------------------
--SUBDIRS(CFSQP lepton)
--
--IF(WIN32)
--	FILE(GLOB VTK_LIBS "vtk_dll/*.dll")
--	FOREACH(LIBF ${VTK_LIBS})
--		INSTALL(FILES ${LIBF} DESTINATION  bin)
--	ENDFOREACH()
--ENDIF(WIN32)
--
-+SUBDIRS(lepton)
--- 
-1.8.3.2
-
-
-From ed2fec5249205f54a5a14bfb0bd6a3b4010084a8 Mon Sep 17 00:00:00 2001
+From bd7834c5674d3df0a044231302ae2c3674dee2d7 Mon Sep 17 00:00:00 2001
 From: Christopher Dembia <cld72@cornell.edu>
 Date: Mon, 7 Apr 2014 22:06:08 -0700
-Subject: [PATCH 2/2] Detach output of JavaWrap from GUI.
+Subject: [PATCH 1/3] Detach output of JavaWrap from GUI.
 
 ---
  OpenSim/Wrapping/Java/OpenSimJNI/CMakeLists.txt | 47 +++++++++++++++++++------
@@ -190,6 +72,151 @@ index 13bf0f4..5eee042 100644
  IF(BUILD_TESTING)
  	SUBDIRS(Test)
  ENDIF(BUILD_TESTING)
+-- 
+1.8.3.2
+
+
+From a26edbe0e8ce3889397bc6b8f0da64740e2b74ee Mon Sep 17 00:00:00 2001
+From: Christopher Dembia <cld72@cornell.edu>
+Date: Mon, 7 Apr 2014 09:46:37 -0700
+Subject: [PATCH 2/3] Clear CMake of Gui, CFSQP, Models, installer.
+
+---
+ CMakeLists.txt         | 54 +++-----------------------------------------------
+ Vendors/CMakeLists.txt | 10 +---------
+ 2 files changed, 4 insertions(+), 60 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 34c6f8d..b68f41e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -381,13 +381,6 @@ ENDFOREACH()
+ INSTALL(DIRECTORY ${Simbody_INCLUDE_DIR} DESTINATION sdk/include/SimTK 
+ 			PATTERN ".svn" EXCLUDE)
+ 			
+-SET(OPENSIM_INSTALL_PACKAGE_BUILD OFF CACHE BOOL "Build an installer (to post on simtk.org)")
+-MARK_AS_ADVANCED(OPENSIM_INSTALL_PACKAGE_BUILD)
+-IF(OPENSIM_INSTALL_PACKAGE_BUILD)
+-IF(WIN32)
+-	SET(VTK_LIB_DIR ${OpenSim_SOURCE_DIR}/Vendors/vtk_dll/${PLATFORM_ABI}/ CACHE PATH "Prebuilt VTK-shared libraries")	
+-ENDIF(WIN32)
+-ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
+ 
+ IF(NOT LIBRARY_OUTPUT_PATH)
+   SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/${VCVERSION} CACHE INTERNAL "Single output directory for building all libraries.")
+@@ -467,18 +460,6 @@ INSTALL(PROGRAMS ${THIRDPARTY_BIN_FILES}
+ INSTALL(FILES ${THIRDPARTY_LIB_FILES}    DESTINATION lib)
+ INSTALL(FILES ${THIRDPARTY_SDKLIB_FILES} DESTINATION sdk/lib)
+ 
+-## These INSTALL commands should go into proper subdirectories
+-IF(WIN32)
+-	IF(OPENSIM_INSTALL_PACKAGE_BUILD)
+-		# Install windows runtime libraries to support prebuilt libraries
+-        # and redistributable
+-		INSTALL_FILES(/bin/ FILES 
+-			${OpenSim_SOURCE_DIR}/Vendors/vtk_dll/msvcr71.dll
+-		    ${OpenSim_SOURCE_DIR}/Vendors/vtk_dll/msvcp71.dll)
+-		
+-	ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
+-ENDIF(WIN32)
+-
+ 
+ ## The following are required to uses Dart and the Cdash dashboard per Jesse
+ ENABLE_TESTING()
+@@ -519,46 +500,17 @@ FILE(APPEND  ${VERSION_FILE_PATH} "Platform=${Platform}-${PLATFORM_ABI}")
+ FILE(APPEND  ${VERSION_FILE_PATH} "\n")
+ INSTALL(FILES ${VERSION_FILE_PATH} DESTINATION sdk)
+ 
+-IF(OPENSIM_INSTALL_PACKAGE_BUILD)
+-IF(WIN32 AND NOT UNIX)
+-   # There is a bug in NSI that does not handle full unix paths properly. Make
+-   # sure there is at least one set of four (4) backlasshes.
+-   SET(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}\\\\Installer\\\\OpenSimInstallerIcon.bmp")
+-   # SET(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\OpenSim.exe")
+-   SET(CPACK_NSIS_DISPLAY_NAME  "${CPACK_PACKAGE_INSTALL_DIRECTORY} ")
+-   SET(CPACK_CREATE_DESKTOP_LINKS "${CPACK_PACKAGE_INSTALL_DIRECTORY}\\\\bin\\\\OpenSim.exe")
+-   SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.simtk.org/home/opensim")
+-   SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.simtk.org/home/opensim")
+-   SET(CPACK_NSIS_CONTACT "aymanh@simtk.org")
+-   SET(CPACK_NSIS_MODIFY_PATH ON)
+-   SET (CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+-     "ExecWait '\\\"$INSTDIR\\\\bin\\\\vcredist_x86.exe\\\"'"
+-   )
+-ELSE(WIN32 AND NOT UNIX)
+-   SET(CPACK_STRIP_FILES "bin/OpenSim")
+-   SET(CPACK_SOURCE_STRIP_FILES "")
+-ENDIF(WIN32 AND NOT UNIX)
+-SET(CPACK_PACKAGE_EXECUTABLES "OpenSim" "OpenSim")
+-
+-INCLUDE (CPack)
+-
+-ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
+-
+ #
+ # Build the documentation
+ #
+ 
+ #-----------------------------------------------------------------------------
+-SET(BUILD_API_ONLY OFF CACHE BOOL "Build API only (headers and libs, no GUI or Applications")
++SET(BUILD_API_ONLY OFF CACHE BOOL "Build/install only headers, libraries,
++    wrapping, tests; not applications (ik, rra, etc.).")
+ MARK_AS_ADVANCED( BUILD_API_ONLY )
+ 
+ IF(BUILD_API_ONLY)
+ 	SUBDIRS(Vendors OpenSim)
+-	SET(OPENSIM_INSTALL_PACKAGE_BUILD OFF)
+ ELSE(BUILD_API_ONLY)
+-IF(OPENSIM_INSTALL_PACKAGE_BUILD)
+-	SUBDIRS(Vendors OpenSim Applications Models Gui)
+-ELSE(OPENSIM_INSTALL_PACKAGE_BUILD)
+-	SUBDIRS(Vendors OpenSim Applications Models)
+-ENDIF(OPENSIM_INSTALL_PACKAGE_BUILD)
++	SUBDIRS(Vendors OpenSim Applications)
+ ENDIF(BUILD_API_ONLY)
+diff --git a/Vendors/CMakeLists.txt b/Vendors/CMakeLists.txt
+index 64d9ab8..7dd474c 100644
+--- a/Vendors/CMakeLists.txt
++++ b/Vendors/CMakeLists.txt
+@@ -1,10 +1,2 @@
+ #-----------------------------------------------------------------------------
+-SUBDIRS(CFSQP lepton)
+-
+-IF(WIN32)
+-	FILE(GLOB VTK_LIBS "vtk_dll/*.dll")
+-	FOREACH(LIBF ${VTK_LIBS})
+-		INSTALL(FILES ${LIBF} DESTINATION  bin)
+-	ENDFOREACH()
+-ENDIF(WIN32)
+-
++SUBDIRS(lepton)
+-- 
+1.8.3.2
+
+
+From 79529f546aa71df0b437dc26540e5c0734f53052 Mon Sep 17 00:00:00 2001
+From: Christopher Dembia <cld72@cornell.edu>
+Date: Sat, 12 Apr 2014 17:42:39 -0700
+Subject: [PATCH 3/3] Fix Java source install directory.
+
+---
+ OpenSim/Wrapping/Java/OpenSimJNI/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/OpenSim/Wrapping/Java/OpenSimJNI/CMakeLists.txt b/OpenSim/Wrapping/Java/OpenSimJNI/CMakeLists.txt
+index 5eee042..3e42f47 100644
+--- a/OpenSim/Wrapping/Java/OpenSimJNI/CMakeLists.txt
++++ b/OpenSim/Wrapping/Java/OpenSimJNI/CMakeLists.txt
+@@ -82,8 +82,8 @@ ELSE()
+             ARCHIVE DESTINATION sdk/lib)
+ ENDIF()
+ 
+-INSTALL(DIRECTORY ${SWIG_JAVA_SOURCE_BUILD_OUTPUT_DIR}
+-    DESTINATION sdk/Java)
++INSTALL(DIRECTORY ${SWIG_JAVA_SOURCE_BUILD_OUTPUT_DIR}/
++    DESTINATION sdk/Java/${SWIG_JAVA_PACKAGE_PATH})
+ 
+ IF(BUILD_TESTING)
+ 	SUBDIRS(Test)
 -- 
 1.8.3.2
 
