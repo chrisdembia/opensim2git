@@ -1,3 +1,33 @@
+20140408:
+
+-clean up opensim2git; put in opensim-org
+-'standalone' must be committed to all extant branches at time of conversion
+-opensim complete history: public or not?
+-opensimcore: put in readme that the history is broken (at which revision
+also):
+    automate this.
+-leave a 3.2 branch in opensim-core; don't make tag?
+-account for visualizer branch
+-ensure CFSQP is removed.
+-make sure git blame works prior to 6665.
+-we lose git-blame before 2011.
+    -revisit making a small number of 
+-give ayman an example of the future repository layout.
+-update scripts that push git repos to github.
+-refine what opensim-core installation looks like. this gets complicated, and
+affects the documentation.
+    -simtk libraries and headers should not be copied over.
+        this affects windows users
+            only copy over simbody libraries if on windows.
+    -sdk/(include|doc|APIExamples) could all be moved to the root directory.
+    -eventually we could move examples, etc into share/.../
+-is a big repo okay?
+-stop using my altered svn2git; with the --ignore flag.
+-what will the name of the Cmake project be? OpenSim? then what's the name of
+the GUI project?
+-allow push script to push to opensim-org.
+
+
 20140328:
 
 * subtree split models off of opensim-core

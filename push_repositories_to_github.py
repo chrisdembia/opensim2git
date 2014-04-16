@@ -53,7 +53,7 @@ def push_to_github(local_relpath, description, private):
         call('git push {0} --tags'.format(github_username))
 
 push_to_github('cfsqp', cfsqp_description, 'true')
-push_to_github('opensim-core', opensim_core_description, 'false')
+push_to_github('opensim-core', opensim_core_description, 'true')
 push_to_github('opensim-complete-history',
         opensim_complete_history_description, 'true')
-push_to_github('opensim-models', opensim_models_description, 'false')
+push_to_github('opensim-models', opensim_models_description, 'true')
