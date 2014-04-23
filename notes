@@ -3,6 +3,7 @@
 -use The BFG to remove large files or otherwise prune the history.
 -opensim-models has some large files currently.
 -opensim-legacy is too large?
+-save svn2git logs back to opensim2git repo.
 
 
 20140408:

@@ -1,3 +1,6 @@
 [submodule "svn2git"]
 	path = svn2git
 	url = https://github.com/chrisdembia/svn2git.git
+[submodule "bfg-repo-cleaner"]
+	path = bfg-repo-cleaner
+	url = git@github.com:rtyley/bfg-repo-cleaner.git

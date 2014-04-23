@@ -59,6 +59,6 @@ def push_to_github(local_relpath, description, private):
 
 #push_to_github('cfsqp', cfsqp_description, 'true')
 #push_to_github('opensim-core', opensim_core_description, 'true')
-push_to_github('opensim-complete-history',
-        opensim_complete_history_description, 'true')
-#push_to_github('opensim-models', opensim_models_description, 'true')
+push_to_github('opensim-legacy',
+        opensim_legacy_description, 'true')
+push_to_github('opensim-models', opensim_models_description, 'true')
