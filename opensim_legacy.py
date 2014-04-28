@@ -14,20 +14,30 @@ normalize_line_endings = False
 opensim_legacy_dir = os.path.join(git_repos_dir,
         'opensim-legacy')
 
+opensim_legacy_fs_dir = '/dev/shm/opensim-legacy'
+
 prompt_delete_dir(opensim_legacy_dir)
 
-os.makedirs(opensim_legacy_dir)
+# Copying svn over to temporary in-memory file system.
+# This path ends up in all commit messages as the svn2git metadata.
+fspath = '/dev/shm/opensim'
 
+if os.path.exists(fspath): call('rm -rf %s' % fspath)
+call('cp -r %s %s' % (svn_mirror_dir, fspath))
+
+if os.path.exists(opensim_legacy_fs_dir):
+    call('rm -rf %' % opensim_legacy_fs_dir)
+call('mkdir %s' % opensim_legacy_fs_dir)
 
 # svn2git
 # -------
 myprint('Running svn2git for opensim-legacy.')
-with cd(opensim_legacy_dir):
+with cd(opensim_legacy_fs_dir):
 
     # Write output to log files.
-    out = open('%s/svn2git_progress_log.txt' % opensim_legacy_dir,
+    out = open('%s/svn2git_progress_log.txt' % opensim_legacy_fs_dir,
             'w')
-    err = open('%s/svn2git_error_log.txt' % opensim_legacy_dir, 'w')
+    err = open('%s/svn2git_error_log.txt' % opensim_legacy_fs_dir, 'w')
 
     call("svn2git file://%s "
             "--trunk Trunk "
@@ -36,32 +46,23 @@ with cd(opensim_legacy_dir):
             "--authors %s/authors.txt "
             "--verbose "
             "--username %s "
-            "--exclude '.*CFSQP.*' "
-            "--metadata " % (svn_mirror_dir, homebase_dir, username),
+            "--metadata " % (fspath, homebase_dir, username),
             stdout=out,
             stderr=err)
     out.close()
     err.close()
 
     # Edit 'description' file, which is used by GitWeb (run `$ git instaweb`).
-    call('echo "opensim_legacy: %s" '
+    call('echo "opensim-legacy: %s" '
             '> %s/.git/description' % (
                 opensim_legacy_description,
-                opensim_legacy_dir))
+                opensim_legacy_fs_dir))
 
+call('cp -r %s %s' % (opensim_legacy_fs_dir, opensim_legacy_dir))
 
-def convert_branch_to_tag(branch_name, tag_name):
-    call('git checkout %s' % branch_name)
-    call('git tag %s' % tag_name)
-    call('git checkout master')
-    call('git branch %s -D' % branch_name)
-def delete_branch(branch_name):
-    call('git branch %s -D' % branch_name)
-def delete_tag(tag_name):
-    call('git tag -d %s' % tag_name)
-def rename_tag(old, new):
-    call('git tag %s %s' % (new, old))
-    delete_tag(old)
+myprint('Clean up in-memory files')
+call('rm -rf %s' % fspath)
+call('rm -rf %s' % opensim_legacy_fs_dir)
     
 if normalize_line_endings:
     filter_branch_tasks(opensim_legacy_dir)

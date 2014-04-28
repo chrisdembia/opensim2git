@@ -98,25 +98,27 @@ class cd_normalize(cd):
         if os.path.exists(fspath): os.removedirs(fspath)
         super(cd_normalize, self).__exit__(*args)
 
-def filter_branch_tasks(repo_path):
+def filter_branch_tasks(repo_path, branches):
     myprint('Normalizing line endings...')
-    with cd_normalize(repo_path):
-        # Fix all inconsistent line endings from the history.
-        # '-d' flag makes in-memory file system: should speed up the operation.
-        call("git filter-branch "
-                "--force "
-                "--tree-filter '%s/normalize_line_endings.sh' "
-                "--prune-empty "
-                "--tag-name-filter cat "
-                "-d %s "
-                "-- --all" % (homebase_dir, fspath),
-                )
+    with cd(repo_path):
 
-        #  Ensure consistent line endings in the future.
-        # http://stackoverflow.com/questions/1510798/trying-to-fix-line-endings-with-git-filter-branch-but-having-no-luck/1511273#1511273
-        call('echo "* text=auto" >> .gitattributes')
-        call('git add .gitattributes')
-        call('git commit -am "Introduce end-of-line normalization."')
+        # Fix inconsistent line endings in the last commit on the specified
+        # branches.
+        for branch in branches:
+            call('git checkout %s' % branch)
+            call("git filter-branch "
+                    "--force "
+                    "--tree-filter '%s/normalize_line_endings.sh' "
+                    "--prune-empty "
+                    "--tag-name-filter cat "
+                    "-- HEAD^..HEAD" % (homebase_dir),
+                    )
+
+            #  Ensure consistent line endings in the future.
+            # http://stackoverflow.com/questions/1510798/trying-to-fix-line-endings-with-git-filter-branch-but-having-no-luck/1511273#1511273
+            call('echo "* text=auto" >> .gitattributes')
+            call('git add .gitattributes')
+            call('git commit -am "Introduce end-of-line normalization."')
 
 # Garbage collect.
 # ----------------

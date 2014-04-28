@@ -26,10 +26,11 @@ The remaining dependencies are installed automatically:
     * curl: for deleting and creating repositories on the GitHub website.
     * git-core, git-svn, ruby, rubygems: for instaling svn2git.
     * svn2git: a submodule in this repo, which we install automatically.
+    * bfg: for deleting files from git history, included in this repo.
 
 Note that the version of svn2git we use is our own fork of svn2git. We made a
 fork to implement a bugfix that was mentioned in the svn2git issues, but was
-never fixed in an official release of svn2git.
+never fixed in an official release of svn2git (at the time of this writing).
 
 
 Performing the conversion
@@ -41,7 +42,7 @@ Performing the conversion
     * OPENSIMTOGIT_SIMTK_USERNAME: simtk.org username, to access the SVN
     * OpenSim repository.
     * OPENSIMTOGIT_GITHUB_USERNAME: We will create and push the new
-      repositories to this account.
+    * repositories to opensim-org, using this user account.
 
 You can temporarily set environment variables by running the following in a
 terminal::
@@ -49,22 +50,30 @@ terminal::
     $ export OPENSIMTOGIT_LOCAL_DIR=~/opensim_git_repos
 
 
-2. Run the script that does the svn2git conversion and creates git repositories
+2. Run the scripts that do the svn2git conversion and create git repositories
    on your local machine::
 
-        $ python opensim2git.py
+        $ python cfsqp.py
+        $ python opensim_legacy.py
+        $ python opensim_models.py
+        $ python opensim_core.py
 
+   (the order is important).
    This script does the following:
 
-   * Runs svn2git twice; once for cfsqp, and once for opensim-core. Excludes
-     files various from the new openism-core repository.
-   * Runs filter-branch to ensure that line endings are ALWAYS only LF (\n,
-     UNIX line endings). The reason why this is important is that some files
-     have Windows line endings (CRLF, \r\n).
-   * Delete old SVN branches/tags, convert some of them to git tags.
-   * Repair merge history (SVN merges are not picked up by git).
-   * Run git garbage collection on the local git repositories.
-   * Add commits to both git repos that modify CMake files so that when the
+   * Creates an svn mirror of the svn repository.
+   * Runs svn2git to create opensim-legacy and cfsqp.
+   * Copies and modifies opensim-legacy to create opensim-models and
+   * opensim-core.
+   * Cleans out history of opensim-core.
+   * For opensim-core, runs filter-branch to ensure that line endings are only
+     LF (\n, UNIX line endings). The reason why this is important is that some
+     files have Windows line endings (CRLF, \r\n).
+   * For opensim-core, delete old SVN branches/tags, convert some of them to
+   * git tags.
+   * Run git garbage collection on the local git repositories to reduce
+   * repository size.
+   * Add commits to the git repos that modify CMake files so that when the
      repos are pushed to GitHub, they are functional (the projects don't expect
      the now-missing directories).
 
@@ -72,10 +81,6 @@ terminal::
 
         $ python push_repositories_to_github.py
 
-4. Transfer the git repositories to opensim-org.
-
-In revision 6663, the repository was reorganized. Thus, it seems to make sense
-to start the git repository from this revision.
 
 Historical sections
 ===================

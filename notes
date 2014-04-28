@@ -1,3 +1,13 @@
+20140423:
+
+after the conversion:
+    delete files from svn repo
+    update readme files
+        list the changes to history we made in opensim-core (deleted files).
+    confluence page on using git
+    move issues to git issues
+    update simtk page
+
 20140416:
 
 -use The BFG to remove large files or otherwise prune the history.
