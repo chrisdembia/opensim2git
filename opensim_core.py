@@ -125,7 +125,7 @@ with cd(opensim_core_dir):
     rename_tag('Release_03_02_00', '%s3.2.0' % opensim_core_tag_prefix)
 
     delete_branch('1728Branch')
-    delete_branch('CableWrapping')
+    #delete_branch('CableWrapping')
     delete_branch('Engines')
     delete_branch('Integrator')
     delete_branch('Integrator@1105')
