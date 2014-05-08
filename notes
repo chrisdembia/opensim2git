@@ -4,6 +4,61 @@ after the conversion:
     delete files from svn repo
     update readme files
         list the changes to history we made in opensim-core (deleted files).
+
+        * Models are moved to the opensim-models repository
+        * Gui is removed
+        * All *.psd, *.java, *.dll, *.lib, *.dylib, *.so, *.jar files are
+          removed from every commit.
+        * 
+
+
+
+list_of_current_folders_to_gitrm = [
+        'OpenSim/Utilities/importOldModels',
+        'Models',
+        'Installer',
+        'Documentation',
+        'Vendors/vtk_dll',
+        'Vendors/CFSQP',
+        'Gui',
+        'OpenSim/doc/extra_html/si',
+        ]
+list_of_folders_to_delete = [
+        'importOldModels',
+        'Models',
+        'Installer',
+        'Documentation',
+        'html',
+        'xerces-c*',
+        'Specs',
+        'vtk_dll',
+        'CFSQP',
+        'NMBLTK',
+        'SimTK',
+        'Gui',
+        'Gait*',
+        'Arm26',
+        'Leg39',
+        'si',
+        ]
+list_of_files_to_delete = [
+        'NSIS.InstallOptions.ini.in',
+        'NSIS.template.in',
+        'WriteEnvStr.nsh',
+        '*_wrap.cxx',
+        '*.psd',
+        '*.java',
+        '*.dll',
+        '*.lib',
+        '*.dylib',
+        '*.so',
+        '*.jar',
+        'pyOpenSim.py',
+        'opensimModel.py',
+        'opensim.py',
+        'OpenSimJNI_wrap.cxx',
+        '*.exe',
+        ]
     confluence page on using git
     move issues to git issues
     update simtk page
