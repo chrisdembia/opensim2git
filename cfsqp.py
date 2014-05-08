@@ -40,7 +40,7 @@ with cd(cfsqp_dir):
     call('echo "cfsqp: %s" > %s/.git/description' % (
         cfsqp_description, cfsqp_dir))
     
-filter_branch_tasks(cfsqp_dir)
+filter_branch_tasks(cfsqp_dir, ['master'])
 
 git_garbage_collection(cfsqp_dir)
 
