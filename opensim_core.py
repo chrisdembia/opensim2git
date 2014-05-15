@@ -200,6 +200,10 @@ with cd(opensim_core_dir):
 
     call('git checkout master')
 
+    call('cp %s/opensim-core.travis.yml .travis.yml' % (homebase_dir))
+    call('git add .travis.yml')
+    call('git commit -m"Add Travis configuration file."')
+
 git_garbage_collection(opensim_core_dir)
 
 repository_size(opensim_core_dir)
