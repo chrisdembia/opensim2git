@@ -35,9 +35,10 @@ myprint('Running svn2git for opensim-legacy.')
 with cd(opensim_legacy_fs_dir):
 
     # Write output to log files.
-    out = open('%s/svn2git_progress_log.txt' % opensim_legacy_fs_dir,
-            'w')
-    err = open('%s/svn2git_error_log.txt' % opensim_legacy_fs_dir, 'w')
+    out = open('%s/svn2git_opensim_legacy_progress_log.txt' %
+            opensim_legacy_fs_dir, 'w')
+    err = open('%s/svn2git_opensim_legacy_error_log.txt' %
+            opensim_legacy_fs_dir, 'w')
 
     call("svn2git file://%s "
             "--trunk Trunk "
@@ -70,6 +71,12 @@ if normalize_line_endings:
 git_garbage_collection(opensim_legacy_dir)
 
 repository_size(opensim_legacy_dir)
+
+# Save svn2git log to this repo.
+call('cp %s/svn2git_* %s' % (opensim_legacy_dir, homebase_dir))
+with cd(homebase_dir):
+    call("git add 'svn2git_*'")
+    call('git commit -m"Update openism-legacy svn2git logs."')
 
 # Tell the user how long opensim2git ran for.
 elapsed_time = time.time() - start_time

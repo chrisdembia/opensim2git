@@ -11,6 +11,33 @@ after the conversion:
           removed from every commit.
         * 
 
+    update confluence stuff
+        add page detailing where source code is
+        CONTRIBUTING info moved to repo
+        INSTALL info moved to repo
+        add details about the changes that occurred in the git conversion
+            (above)
+
+       
+       PR's
+            FindOpenSim.cmake
+            travis
+            build a debian installation
+            fix up find_package(Simbody)
+
+
+
+simbody:
+    update the version-checking script
+    update the readme from anything in the old docs.
+
+        old installation docs:  
+                txt file
+                buildfromsource
+                usermanual
+
+
+
 
 
 list_of_current_folders_to_gitrm = [
