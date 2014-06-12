@@ -1,3 +1,104 @@
+20140522;
+
+
+The files that make up the OpenSim source are located in 3 different
+repositories:
+
+    * https://github.com/opensim-org/opensim-core: Source code for C++
+      libraries and command-line applications, and Java and Python wrapping.
+    * https://github.com/opensim-org/opensim-models: Models (.osim) and related
+      example files that are included in the OpenSim distribution.
+    * https://simtk.org/svn/opensim: Source code for the GUI, and facilities to
+      create an OpenSim distribution in concert with the other two
+      repositories.
+
+Layout of opensim-core
+----------------------
+
+Applications: Applications built on top of the OpenSim API including scale, ik,
+id, forward, analyze and corresponding test cases.
+
+OpenSim/doc: setup files for API documentation.
+OpenSim/Examples: C++ API example projects.
+OpenSim/Wrapping: SWIG files for generating Java and Python wrappers.
+OpenSim/<everything else>: The C++ source code used to build the OpenSim
+    libraries.
+
+Vendors: Source code for third-party libraries.
+
+Layout of SVN OpenSim
+---------------------
+
+Gui: Java source code and Netbeans build files for the GUI.
+
+Installer: Files to for making a Windows installer for the GUI.
+
+Vendors: Third-party libraries, like VTK, which is used for visualizing.
+
+History of the organization of the source files
+-----------------------------------------------
+
+Prior to June 2014, all of the OpenSim source files were located in a single
+SVN repository, at https://simtk.org/svn/opensim. In June 2014, we moved some
+of the source files into git repositories at https://github.com/opensim-org.
+
+This conversion was performed using Python scripts located at
+https://github.com/opensim-org/opensim2git, which employ the svn2git conversion
+tool (https://github.com/nirvdrum/svn2git). The conversion consisted of the
+following steps:
+
+1. Convert the entire OpenSim SVN repository to git using svn2git. Call this
+GIT repository 'opensim-legacy'.
+2. Make a copy of 'opensim-legacy', name it 'opensim-core', and make the
+    following changes to it:
+    * Delete from the history any directories with the following names:
+        importOldModels, Models, Gui, Installer, Documentation, html,
+        xerces-c*, Specs, vtk_dll, CFSQP, NMBLTK, SimTK, Gui, Gait*, Arm26,
+        Leg39, si (used for Doxygen documentation; stands for search index).
+    * Delete from the history any files matching (binary and machine-generated
+      files):
+        NSIS.InstallOptions.ini.in
+        NSIS.template.in
+        WriteEnvStr.nsh
+        *_wrap.cxx
+        *.psd
+        *.java
+        *.dll
+        *.lib
+        *.dylib
+        *.so
+        *.jar
+        pyOpenSim.py
+        opensimModel.py
+        opensim.py
+        OpenSimJNI_wrap.cxx
+        *.exe
+    We removed this files since git repositories should not contain binary or
+    machine-generated files. We also wanted to minimze the size of the
+    'opensim-core' repository.
+    * Delete most historical branches and tags.
+3. Make a copy of 'opensim-legacy', extract the 'Models' folder into its own
+    git repository, and name it 'opensim-models'. The models take up a lot of
+    disk space, since they contain reference output (huge Storage files). We
+    felt we could separate this from opensim-core to keep opensim-core as small
+    as possible.
+4. Delete from the SVN repository any files that are not related to the GUI or
+to creating a release of the OpenSim application.
+
+The 'opensim-legacy' repository, which is a private GitHub repository which
+only members of the opensim-org can view, contains a nearly complete history of
+the OpenSim source files, and can be used for reference by the development team
+to explore OpenSim's history using git. We felt this was necessary since the
+'opensim-core' repository does not comtain a complete history.
+
+The SVN repository used to contain an optimization library CFSQP. We do not
+have a license to distribute this code freely. We have deleted this library
+from the SVN repository and placed it in a private GitHub repository,
+accessibly only to members of the opensim-org organization.
+
+For further details about the conversion, see the files at
+https://github.com/opensim-org/opensim2git.
+
 20140423:
 
 after the conversion:
@@ -24,6 +125,7 @@ after the conversion:
             travis
             build a debian installation
             fix up find_package(Simbody)
+            reorganize repository (wrapping, doc, and examples move out).
 
 
 

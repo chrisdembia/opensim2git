@@ -43,8 +43,8 @@ def call(command, *args, **kwargs):
 cfsqp_description = ('CFSQP (C implementation of Feasible Sequential '
         'Quadratic Programming) optimization library, for use with '
             'SimTK OpenSim.')
-opensim_core_description = ('SimTK OpenSim C++ libraries/applications and '
-            'Java/Python wrapping.')
+opensim_core_description = ('SimTK OpenSim C++ libraries and comand-line '
+        'applications and Java/Python wrapping.')
 opensim_models_description = ('SimTK OpenSim models (.osim) and related example '
         'files that are distributed with OpenSim.')
 opensim_legacy_description = ('Complete history of the '
