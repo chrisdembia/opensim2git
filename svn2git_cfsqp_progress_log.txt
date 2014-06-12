@@ -5,8 +5,9 @@ Running command: git svn fetch -r 1053:HEAD
 branch_from: /Vendors => /Vendors/CFSQP
 Found possible branch point: file:///home/fitze/opensim2git_local/svn_mirror/Vendors/CFSQP => file:///home/fitze/opensim2git_local/svn_mirror/Trunk/Vendors/CFSQP, 1052
 Initializing parent: refs/remotes/svn/trunk@1052
-	A	cfsqp.c
+	A	cfsqpusr.h
 	A	readme
+	A	cfsqp.c
 	A	qld.c
 	A	suCFSQPDLL.cpp
 	A	suCFSQPDLL.h
@@ -16,14 +17,13 @@ Initializing parent: refs/remotes/svn/trunk@1052
 	A	sampl1.c
 	A	sampl2a.c
 	A	sampl3.c
-	A	samplePerfOnly.cpp
-	A	sampl4.c
 	A	sampl2b.c
+	A	sampl4.c
+	A	samplePerfOnly.cpp
 	A	sampl5.c
 	A	sampl1CC.cpp
 	A	suCFSQP/suCFSQP.vcproj
 	A	suCFSQP/suCFSQP.dsp
-	A	cfsqpusr.h
 r1053 = 49b25ee5de4308cb81ccd0b24c93fa9bad2e7e71 (refs/remotes/svn/trunk)
 	M	suCFSQP/suCFSQP.vcproj
 r1093 = ff0455a45ab08fd39e27cc4f4e404e1b470e0fec (refs/remotes/svn/trunk)
