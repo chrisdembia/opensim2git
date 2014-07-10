@@ -497,3 +497,8 @@
 1008644 OpenSim/Examples/Gait2392_Simbody/subject01_simbody_adjusted.osim
 1008644 Models/Gait2392_Simbody/subject01_simbody_adjusted.osim
 1003044 Applications/CMC/test/subject02_running_RRA_cycle02_07_v18.osim
+19183841 svn2git_opensim_legacy_progress_log.txt
+19155193 opensim_complete_history_svn2git_progress_log.txt
+13869718 bfg-1.11.3.jar
+1170658 opensim_core_svn2git_progress_log.txt
+13 svn2git

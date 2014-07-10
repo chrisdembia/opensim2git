@@ -33,9 +33,9 @@ def push_to_github(local_relpath, description, private):
     github_name = local_relpath
 
     # Delete the repository on GitHub, in case it already exists.
-    call("curl -u {0} -X DELETE "
-            "'https://api.github.com/repos/opensim-org/{1}'".format(github_username,
-                github_name))
+    #call("curl -u {0} -X DELETE "
+    #        "'https://api.github.com/repos/opensim-org/{1}'".format(github_username,
+    #            github_name))
 
     # Create the new repository.
     # http://developer.github.com/guides/getting-started/#create-a-repository
@@ -57,8 +57,9 @@ def push_to_github(local_relpath, description, private):
         call('git push opensim-org --all')
         call('git push opensim-org --tags')
 
-push_to_github('cfsqp', cfsqp_description, 'true')
-push_to_github('opensim-core', opensim_core_description, 'true')
-push_to_github('opensim-legacy',
-        opensim_legacy_description, 'true')
-push_to_github('opensim-models', opensim_models_description, 'true')
+#push_to_github('cfsqp', cfsqp_description, 'true')
+#push_to_github('opensim-core', opensim_core_description, 'true')
+#push_to_github('opensim-legacy',
+#        opensim_legacy_description, 'true')
+#push_to_github('opensim-models', opensim_models_description, 'true')
+push_to_github('opensim-gui', opensim_gui_description, 'true')

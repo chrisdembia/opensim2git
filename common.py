@@ -51,6 +51,8 @@ opensim_legacy_description = ('Complete history of the '
         "OpenSim project up through %s . This repository is not for "
         "development; it is "
         "only for reference." % datestr)
+opensim_gui_description = ('SimTK OpenSim graphical user interface and '
+        'distribution.')
 
 # To work in a different directory.
 class cd(object):

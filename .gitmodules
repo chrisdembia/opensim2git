@@ -4,3 +4,6 @@
 [submodule "bfg-repo-cleaner"]
 	path = bfg-repo-cleaner
 	url = git@github.com:rtyley/bfg-repo-cleaner.git
+[submodule "git_diet"]
+	path = git_diet
+	url = git@github.com:cmaitchison/git_diet.git
